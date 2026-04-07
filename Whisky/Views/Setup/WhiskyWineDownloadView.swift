@@ -17,6 +17,7 @@
 //
 
 import AppKit
+import Foundation
 import os
 import SemanticVersion
 import SwiftUI
@@ -248,6 +249,15 @@ extension WhiskyWineDownloadView {
 
             let version = versionInfo.version
             let versionString = "\(version.major).\(version.minor).\(version.patch)"
+            if let localURL = localLibrariesTarballURL() {
+                diagnostics.record("Using local Libraries tarball at \(localURL.path)")
+                diagnostics.downloadURL = localURL.absoluteString
+                tarLocation = localURL
+                diagnostics.downloadFinishedAt = Date()
+                proceed()
+                return
+            }
+
             let downloadURLString = DistributionConfig.librariesURL(version: versionString)
             diagnostics.resolvedLibraryVersion = versionString
             diagnostics.resolvedDXVKVersion = versionInfo.dxvkVersion
@@ -384,5 +394,20 @@ extension WhiskyWineDownloadView {
             fractionProgress = Double(completedBytes) / Double(totalBytes)
         }
         diagnostics.recordProgress(bytesReceived: completedBytes, bytesExpected: totalBytes)
+    }
+
+    private func localLibrariesTarballURL() -> URL? {
+        let fileManager = FileManager.default
+        let appParent = Bundle.main.bundleURL.deletingLastPathComponent()
+        let candidates = [
+            appParent.appendingPathComponent("Libraries.tar.gz"),
+            appParent.appendingPathComponent("../Libraries.tar.gz").standardizedFileURL
+        ]
+        for candidate in candidates {
+            if fileManager.fileExists(atPath: candidate.path) {
+                return candidate
+            }
+        }
+        return nil
     }
 }

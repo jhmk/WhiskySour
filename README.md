@@ -44,6 +44,7 @@ WhiskeySour provides a clean and easy-to-use graphical wrapper for Wine built in
 
 - Clone the repo and run `scripts/fetch-runtime.sh` followed by `scripts/build-and-run.sh`. The fetcher downloads the Wine/DXVK runtime from the configured releases, copies the system `cabextract` binary into the bundle (Homebrew-provided via `brew install cabextract`), and packages `Libraries.tar.gz`, while the builder copies the resulting `WhiskeySour.app` to the repo root and launches it so the installer can populate `~/Library/Application Support/com.jhmk.WhiskySour/Libraries/`.
 - The runtime download only runs the first time; future launches use the locally cached Wine/DXVK bundle. Re-running the script rebuilds the app if you change code.
+- When a freshly built `Libraries.tar.gz` sits next to `WhiskeySour.app`, the download screen uses that tarball directly instead of pulling `Libraries.tar.gz` from GitHub Releases, so the in-app installer succeeds without requiring the remote asset.
 - **Stability Diagnostics** - One-click diagnostic reports for troubleshooting crashes and freezes
 - **Native SwiftUI** - Beautiful, familiar macOS interface
 
