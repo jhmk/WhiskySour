@@ -7,7 +7,7 @@ TARBALL="$REPO/Libraries.tar.gz"
 
 WINE_URL="https://github.com/Gcenx/macOS_Wine_builds/releases/download/11.0/wine-stable-11.0-osx64.tar.xz"
 DXVK_URL="https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz"
-CABEXTRACT_URL="https://github.com/baskerville/cabextract/releases/download/1.12/cabextract-1.12.tar.gz"
+CABEXTRACT_URL="https://github.com/deepin-community/cabextract/archive/refs/tags/1.11-1.tar.gz"
 
 mkdir -p "$LIBDIR"
 
