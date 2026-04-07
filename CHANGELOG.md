@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `scripts/build-and-run.sh` builds `WhiskeySour.app` and immediately opens it so the first launch downloads the Wine/DXVK runtime automatically.
+- `scripts/fetch-runtime.sh` downloads Wine, DXVK, and cabextract into `Libraries/` and packages them as `Libraries.tar.gz` so releases can upload the bundle effortlessly.
  - The helper now copies the built `WhiskeySour.app` into the repo root so users can launch the bundle without digging through DerivedData.
 
 ## [3.1.3] - 2026-04-07

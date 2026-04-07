@@ -3,6 +3,8 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DERIVED_DATA="$REPO_ROOT/DerivedData"
+LIBRARIES_DIR="$REPO_ROOT/Libraries"
+LIBRARIES_TARBALL="$REPO_ROOT/Libraries.tar.gz"
 
 cd "$REPO_ROOT"
 
@@ -22,4 +24,13 @@ if [[ -n "$APP_PATH" && -d "$APP_PATH" ]]; then
 else
   echo "Build succeeded but no .app bundle was found under $DERIVED_DATA/Build/Products/Debug"
   exit 1
+fi
+
+if [[ ! -f "$LIBRARIES_TARBALL" ]]; then
+  if [[ -d "$LIBRARIES_DIR" && $(find "$LIBRARIES_DIR" -mindepth 1 -print -quit) ]]; then
+    echo "Packaging Libraries/ into Libraries.tar.gz"
+    tar -czf "$LIBRARIES_TARBALL" -C "$LIBRARIES_DIR" .
+  else
+    echo "Libraries/ is empty; please populate it before packaging."
+  fi
 fi
