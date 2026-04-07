@@ -20,8 +20,12 @@ download_and_extract() {
   local url="$1"
   local tmp="$REPO/$(basename "$url")"
 
-  echo "Downloading $url"
-  curl -L -f "$url" -o "$tmp"
+  if [[ -f "$tmp" ]]; then
+    echo "Reusing cached $(basename "$url")"
+  else
+    echo "Downloading $url"
+    curl -L -f "$url" -o "$tmp"
+  fi
 
   case "$tmp" in
     *.tar.xz) tar -xJf "$tmp" -C "$LIBDIR" ;;
@@ -37,7 +41,7 @@ download_and_extract "$DXVK_URL"
 CABEXTRACT_TARGET="$LIBDIR/cabextract"
 for url in "${CABEXTRACT_URLS[@]}"; do
   download_and_extract "$url"
-  CABEXTRACT_BIN=$(find "$LIBDIR" -name cabextract -type f -perm +111 -print -quit)
+    CABEXTRACT_BIN=$(find "$LIBDIR" -name cabextract -type f -perm +111 -print -quit)
   if [[ -n "$CABEXTRACT_BIN" ]]; then
     cp "$CABEXTRACT_BIN" "$CABEXTRACT_TARGET"
     chmod +x "$CABEXTRACT_TARGET"
