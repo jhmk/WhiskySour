@@ -50,7 +50,7 @@ for url in "${CABEXTRACT_URLS[@]}"; do
       chmod +x "$CABEXTRACT_TARGET"
       break
     else
-      echo "cabextract binary not found in $url, trying next URL"
+  echo "cabextract binary not found in $url, trying next URL"
     fi
   else
     echo "Skipping $url due to download/extract failure"
@@ -58,7 +58,31 @@ for url in "${CABEXTRACT_URLS[@]}"; do
 done
 
 if [[ ! -f "$CABEXTRACT_TARGET" ]]; then
-  echo "warning: cabextract binary still missing after all downloads"
+  echo "Attempting to build cabextract from source"
+  for src_dir in "$LIBDIR"/cabextract*; do
+    if [[ -d "$src_dir/src" && -f "$src_dir/configure" ]]; then
+      pushd "$src_dir" > /dev/null
+      ./configure --prefix="$LIBDIR" && make -j$(sysctl -n hw.ncpu)
+      if [[ -f src/cabextract ]]; then
+        cp src/cabextract "$CABEXTRACT_TARGET"
+        chmod +x "$CABEXTRACT_TARGET"
+        popd > /dev/null
+        break
+      fi
+      popd > /dev/null
+    fi
+  done
+fi
+
+if [[ ! -f "$CABEXTRACT_TARGET" && -x "$(command -v cabextract 2>/dev/null)" ]]; then
+  echo "Using system cabextract binary from $(command -v cabextract)"
+  cp "$(command -v cabextract)" "$CABEXTRACT_TARGET"
+  chmod +x "$CABEXTRACT_TARGET"
+fi
+
+if [[ ! -f "$CABEXTRACT_TARGET" ]]; then
+  echo "error: cabextract binary still missing after all downloads and builds"
+  exit 1
 fi
 
 if [[ -f "$TARBALL" ]]; then

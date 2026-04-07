@@ -60,7 +60,7 @@ Replace the placeholder in `Whisky/Info.plist`:
 ### Steps
 
 1. **Prepare runtime bundle**
-   - Run `scripts/fetch-runtime.sh` locally to download Wine, DXVK, and cabextract into `Libraries/` and produce `Libraries.tar.gz`.
+   - Run `scripts/fetch-runtime.sh` locally to download Wine, DXVK, and cabextract into `Libraries/`, build `cabextract` with Autoconf/Automake, and produce `Libraries.tar.gz`.
 
 1. **Update CHANGELOG.md**
    ```bash
