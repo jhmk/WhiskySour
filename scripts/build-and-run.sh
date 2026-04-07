@@ -12,11 +12,11 @@ xcodebuild -project Whisky.xcodeproj \
   -derivedDataPath "$DERIVED_DATA" \
   build
 
-APP_PATH="$DERIVED_DATA/Build/Products/Debug/Whisky.app"
-if [[ -d "$APP_PATH" ]]; then
-  echo "Launching Whisky.app to trigger the runtime download..."
+APP_PATH="$(find "$DERIVED_DATA/Build/Products/Debug" -maxdepth 1 -name "*.app" -print -quit)"
+if [[ -n "$APP_PATH" && -d "$APP_PATH" ]]; then
+  echo "Launching $(basename "$APP_PATH") to trigger the runtime download..."
   open "$APP_PATH"
 else
-  echo "Build succeeded but $APP_PATH is missing"
+  echo "Build succeeded but no .app bundle was found under $DERIVED_DATA/Build/Products/Debug"
   exit 1
 fi
