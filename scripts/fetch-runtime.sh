@@ -11,6 +11,7 @@ DXVK_URL="https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.
 CABEXTRACT_URLS=(
   "https://www.cabextract.org.uk/cabextract-1.11.tar.gz"
 )
+NUM_CORES="$(sysctl -n hw.ncpu 2>/dev/null || echo 4)"
 
 mkdir -p "$LIBDIR"
 mkdir -p "$CACHE_DIR"
@@ -65,9 +66,15 @@ if [[ ! -f "$CABEXTRACT_TARGET" ]]; then
   for src_dir in "$LIBDIR"/cabextract*; do
     if [[ -d "$src_dir/src" && -f "$src_dir/configure" ]]; then
       pushd "$src_dir" > /dev/null
-      ./configure --prefix="$LIBDIR" && make -j$(sysctl -n hw.ncpu)
-      if [[ -f src/cabextract ]]; then
-        cp src/cabextract "$CABEXTRACT_TARGET"
+      ./configure --prefix="$LIBDIR" && make -j"$NUM_CORES"
+      built_cabextract=""
+      if [[ -f cabextract ]]; then
+        built_cabextract="cabextract"
+      elif [[ -f src/cabextract ]]; then
+        built_cabextract="src/cabextract"
+      fi
+      if [[ -n "$built_cabextract" ]]; then
+        cp "$built_cabextract" "$CABEXTRACT_TARGET"
         chmod +x "$CABEXTRACT_TARGET"
         popd > /dev/null
         break
