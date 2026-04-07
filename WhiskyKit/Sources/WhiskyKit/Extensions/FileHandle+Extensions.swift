@@ -243,10 +243,14 @@ extension FileHandle {
         header += "Metal HUD: \(bottle.settings.metalHud)\n"
         header += "Metal Trace: \(bottle.settings.metalTrace)\n\n"
 
+        header += "Direct3D Backend: \(bottle.settings.d3dTranslationBackend.displayName)\n"
+
         if bottle.settings.dxvk {
             header += "DXVK: \(bottle.settings.dxvk)\n"
             header += "DXVK Async: \(bottle.settings.dxvkAsync)\n"
             header += "DXVK HUD: \(bottle.settings.dxvkHud)\n\n"
+        } else {
+            header += "\n"
         }
 
         writeWineLog(line: header)

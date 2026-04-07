@@ -3,13 +3,13 @@
   # Whisky 🥃
   *Wine but a bit stronger*
 
-  > **Community Fork** - This is an independent fork maintained by [@frankea](https://github.com/frankea).
+  > **Community Fork** - This is an independent fork maintained by [@jhmk](https://github.com/jhmk).
   > Not affiliated with the original Whisky project or getwhisky.app.
 
-  ![](https://img.shields.io/github/actions/workflow/status/frankea/Whisky/CI.yml?style=for-the-badge&label=CI)
-  [![](https://img.shields.io/codecov/c/github/frankea/Whisky?style=for-the-badge&logo=codecov&label=Coverage)](https://codecov.io/gh/frankea/Whisky)
-  [![](https://img.shields.io/github/issues/frankea/Whisky?style=for-the-badge)](https://github.com/frankea/Whisky/issues)
-  [![Documentation](https://img.shields.io/badge/Documentation-DocC-blue?style=for-the-badge)](https://frankea.github.io/Whisky/documentation/whiskykit/)
+  ![](https://img.shields.io/github/actions/workflow/status/jhmk/WhiskySour/CI.yml?style=for-the-badge&label=CI)
+  [![](https://img.shields.io/codecov/c/github/jhmk/WhiskySour?style=for-the-badge&logo=codecov&label=Coverage)](https://codecov.io/gh/jhmk/WhiskySour)
+  [![](https://img.shields.io/github/issues/jhmk/WhiskySour?style=for-the-badge)](https://github.com/jhmk/WhiskySour/issues)
+  [![Documentation](https://img.shields.io/badge/Documentation-DocC-blue?style=for-the-badge)](https://jhmk.github.io/WhiskySour/documentation/whiskykit/)
 </div>
 
 ## Overview
@@ -36,6 +36,7 @@ Whisky provides a clean and easy-to-use graphical wrapper for Wine built in nati
 
 - **Wine 11.0** - Latest stable Wine with improved compatibility and networking
 - **Launcher Compatibility** - Built-in support for Steam, Epic, EA App, Rockstar, Battle.net, and more
+- **Experimental DXMT Backend** - Optional Metal-based Direct3D backend for Apple Silicon and Tahoe
 - **Controller Support** - SDL environment variable controls for gamepad detection and mapping issues
 - **Stability Diagnostics** - One-click diagnostic reports for troubleshooting crashes and freezes
 - **Native SwiftUI** - Beautiful, familiar macOS interface
@@ -43,11 +44,11 @@ Whisky provides a clean and easy-to-use graphical wrapper for Wine built in nati
 ## System Requirements
 
 - **CPU**: Apple Silicon (M-series chips)
-- **OS**: macOS Sequoia 15.0 or later
+- **OS**: macOS Tahoe 26.0 or later
 
 ## Installation
 
-Download the latest release from the [Releases page](https://github.com/frankea/Whisky/releases).
+Download the latest release from the [Releases page](https://github.com/jhmk/WhiskySour/releases).
 
 > **Note:** This fork is not available via Homebrew. The `brew install --cask whisky` command installs the original Whisky project, not this fork.
 
@@ -55,9 +56,9 @@ Download the latest release from the [Releases page](https://github.com/frankea/
 
 WhiskyKit, the core framework powering Whisky, has comprehensive API documentation:
 
-- **[WhiskyKit API Documentation](https://frankea.github.io/Whisky/documentation/whiskykit/)** - Full API reference with usage examples
-- **[Getting Started Guide](https://frankea.github.io/Whisky/documentation/whiskykit/gettingstarted)** - Learn how to integrate WhiskyKit
-- **[Architecture Overview](https://frankea.github.io/Whisky/documentation/whiskykit/architecture)** - Understand how WhiskyKit components work together
+- **[WhiskyKit API Documentation](https://jhmk.github.io/WhiskySour/documentation/whiskykit/)** - Full API reference with usage examples
+- **[Getting Started Guide](https://jhmk.github.io/WhiskySour/documentation/whiskykit/gettingstarted)** - Learn how to integrate WhiskyKit
+- **[Architecture Overview](https://jhmk.github.io/WhiskySour/documentation/whiskykit/architecture)** - Understand how WhiskyKit components work together
 
 ### Troubleshooting
 
@@ -65,7 +66,7 @@ WhiskyKit, the core framework powering Whisky, has comprehensive API documentati
 - **[Steam Compatibility Guide](docs/SteamCompatibility.md)** - Detailed guide for Steam on Whisky
 - **[Stability Troubleshooting](docs/StabilityTroubleshooting.md)** - Diagnose crashes, freezes, reboots, and kernel panics
 - **Controller Issues** - Enable "Controller Compatibility Mode" in Bottle Config → Controller & Input
-- **[Game Support Wiki](https://github.com/frankea/Whisky/wiki/Game-Support)** - Community-maintained game compatibility list
+- **[Game Support Wiki](https://github.com/jhmk/WhiskySour/wiki/Game-Support)** - Community-maintained game compatibility list
 
 ---
 

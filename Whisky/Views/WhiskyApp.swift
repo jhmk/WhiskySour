@@ -21,7 +21,7 @@ import Sparkle
 import SwiftUI
 import WhiskyKit
 
-private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.franke.Whisky", category: "WhiskyApp")
+private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.jhmk.WhiskySour", category: "WhiskyApp")
 
 @main
 struct WhiskyApp: App {
@@ -106,12 +106,12 @@ struct WhiskyApp: App {
             }
             CommandGroup(replacing: .help) {
                 Button("help.github") {
-                    if let url = URL(string: "https://github.com/frankea/Whisky") {
+                    if let url = URL(string: "https://github.com/jhmk/WhiskySour") {
                         openURL(url)
                     }
                 }
                 Button("help.issues") {
-                    if let url = URL(string: "https://github.com/frankea/Whisky/issues") {
+                    if let url = URL(string: "https://github.com/jhmk/WhiskySour/issues") {
                         openURL(url)
                     }
                 }
@@ -132,6 +132,10 @@ struct WhiskyApp: App {
 
     static func openLogsFolder() {
         NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: Wine.logsFolder.path)
+    }
+
+    static func openDXMTFolder() {
+        NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: WhiskyWineInstaller.dxmtFolder.path)
     }
 
     static func deleteOldLogs() {

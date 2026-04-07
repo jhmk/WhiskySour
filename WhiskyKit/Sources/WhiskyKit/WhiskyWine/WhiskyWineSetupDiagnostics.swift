@@ -52,6 +52,10 @@ public struct WhiskyWineSetupDiagnostics: Codable, Sendable {
     public var versionPlistURL: String?
     /// Public download URL (safe to share)
     public var downloadURL: String?
+    /// Resolved library bundle version from the version plist.
+    public var resolvedLibraryVersion: String?
+    /// Resolved DXVK version from the version plist.
+    public var resolvedDXVKVersion: String?
     public var versionHTTPStatus: Int?
     public var downloadHTTPStatus: Int?
 
@@ -84,6 +88,8 @@ public struct WhiskyWineSetupDiagnostics: Codable, Sendable {
     public mutating func resetDownloadState(reason: String? = nil) {
         versionPlistURL = nil
         downloadURL = nil
+        resolvedLibraryVersion = nil
+        resolvedDXVKVersion = nil
         versionHTTPStatus = nil
         downloadHTTPStatus = nil
         bytesReceived = 0
@@ -126,6 +132,7 @@ public struct WhiskyWineSetupDiagnostics: Codable, Sendable {
 
         appendHeaderLines(into: &lines, stage: stage, error: error)
         appendNetworkLines(into: &lines)
+        appendVersionLines(into: &lines)
         appendProgressLines(into: &lines)
         appendInstallAttemptLines(into: &lines)
         appendDiskLines(into: &lines)
@@ -148,6 +155,14 @@ public struct WhiskyWineSetupDiagnostics: Codable, Sendable {
         appendIfPresent("Version plist HTTP", value: versionHTTPStatus, into: &lines)
         appendIfPresent("Download URL", value: sanitizedURLString(downloadURL), into: &lines)
         appendIfPresent("Download HTTP", value: downloadHTTPStatus, into: &lines)
+        lines.append("")
+    }
+
+    private func appendVersionLines(into lines: inout [String]) {
+        guard resolvedLibraryVersion != nil || resolvedDXVKVersion != nil else { return }
+        lines.append("[VERSION]")
+        appendIfPresent("Library version", value: resolvedLibraryVersion, into: &lines)
+        appendIfPresent("DXVK version", value: resolvedDXVKVersion, into: &lines)
         lines.append("")
     }
 

@@ -43,6 +43,7 @@ WhiskyKit is designed as a reusable framework that can be integrated into other 
 - ``BottleWineConfig``
 - ``BottleMetalConfig``
 - ``BottleDXVKConfig``
+- ``D3DTranslationBackend``
 - ``BottlePerformanceConfig``
 - ``WinVersion``
 - ``EnhancedSync``

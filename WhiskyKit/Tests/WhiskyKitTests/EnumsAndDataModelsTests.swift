@@ -296,8 +296,8 @@ final class PEErrorTests: XCTestCase {
     }
 
     func testPEErrorIsError() {
-        let error = PEError.invalidPEFile
-        XCTAssertTrue(error is Error)
+        let error: Error = PEError.invalidPEFile
+        XCTAssertNotNil(error)
     }
 
     func testPEErrorEquality() {

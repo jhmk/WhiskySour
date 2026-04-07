@@ -20,13 +20,16 @@ import Foundation
 
 public enum DistributionConfig {
     /// Base URL for GitHub Pages distribution
-    public static let baseURL = "https://frankea.github.io/Whisky"
+    public static let baseURL = "https://jhmk.github.io/WhiskySour"
 
     /// URL for the WhiskyWine version plist file
     public static let versionPlistURL = "\(baseURL)/WhiskyWineVersion.plist"
 
     /// Base URL for GitHub Releases downloads
-    public static let releasesBaseURL = "https://github.com/frankea/Whisky/releases/download"
+    public static let releasesBaseURL = "https://github.com/jhmk/WhiskySour/releases/download"
+
+    /// Latest DXMT release page for the experimental backend bundle.
+    public static let dxmtReleaseURL = "https://github.com/3Shain/dxmt/releases/latest"
 
     /// URL for the Sparkle appcast feed
     public static let appcastURL = "\(baseURL)/appcast.xml"

@@ -4,7 +4,7 @@ Thanks for your interest! First, make a fork of Whisky, create a new branch for 
 
 ## Build Environment
 
-Whisky is built using **Xcode 16** on **macOS Sequoia 15.0** or later. All external dependencies are handled through the Swift Package Manager.
+Whisky is built using **Xcode 16** on **macOS Tahoe 26.0** or later. All external dependencies are handled through the Swift Package Manager.
 
 ## Code Style
 

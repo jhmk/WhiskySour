@@ -241,7 +241,7 @@ extension Bottle {
     func exportAsArchive(destination: URL) async throws {
         guard let bottle = BottleVM.shared.bottles.first(where: { $0.url == url }) else {
             throw NSError(
-                domain: "com.franke.Whisky",
+                domain: "com.jhmk.WhiskySour",
                 code: 1,
                 userInfo: [NSLocalizedDescriptionKey: "Bottle not found"]
             )
@@ -268,7 +268,7 @@ extension Bottle {
     func duplicate(newName: String) async throws -> URL {
         guard let bottle = BottleVM.shared.bottles.first(where: { $0.url == url }) else {
             throw NSError(
-                domain: "com.franke.Whisky",
+                domain: "com.jhmk.WhiskySour",
                 code: 1,
                 userInfo: [NSLocalizedDescriptionKey: "Bottle not found"]
             )

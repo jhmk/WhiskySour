@@ -9,6 +9,10 @@ The Whisky fork uses the following infrastructure for distribution:
 - **GitHub Pages** (`gh-pages` branch): Hosts version metadata and Sparkle appcast
 - **GitHub Releases**: Hosts binary assets (Wine Libraries and application builds)
 
+The most common library maintenance task is a DXVK refresh while keeping the
+Wine runtime pinned to the current stable line. That keeps the scope of a
+compatibility update small and makes regression testing easier to reason about.
+
 ## One-Time Setup: Sparkle EdDSA Keys
 
 Before publishing any application releases, you must generate a new Sparkle EdDSA key pair. This is required because this fork cannot use the original Whisky project's signing keys.
@@ -50,7 +54,8 @@ Replace the placeholder in `Whisky/Info.plist`:
 ### Prerequisites
 
 1. Wine/GPTK binaries compiled and packaged as `Libraries.tar.gz`
-2. Version number determined (e.g., `2.5.0`)
+2. DXVK build selected and staged in the bundle
+3. Version number determined (e.g., `2.5.0`)
 
 ### Steps
 
@@ -68,8 +73,13 @@ Replace the placeholder in `Whisky/Info.plist`:
    - New Wine libraries with GPTK support
    
    ### Fixed
-   - Compatibility issues with macOS Sequoia
+   - Compatibility issues with macOS Tahoe
    ```
+
+   If the release is a DXVK-only refresh, make that explicit in the notes:
+   - Wine remains on the current stable line
+   - DXVK was updated to the newer stable build
+   - Include any smoke-test results for Steam and representative games
 
 2. **Create GitHub Release**
    ```bash
@@ -79,11 +89,12 @@ Replace the placeholder in `Whisky/Info.plist`:
    ```
 
 3. **Create Release on GitHub**
-   - Go to https://github.com/frankea/Whisky/releases/new
+   - Go to https://github.com/jhmk/WhiskySour/releases/new
    - Select tag: `v2.5.0`
    - Title: `Wine Libraries v2.5.0`
    - Description: Copy release notes from CHANGELOG.md
    - Upload `Libraries.tar.gz` as a release asset
+   - Confirm the archive contains the updated `DXVK/` payload
    - Publish release
 
 4. **Update Version Plist on gh-pages**
@@ -94,19 +105,42 @@ Replace the placeholder in `Whisky/Info.plist`:
    #   major: 2
    #   minor: 5
    #   patch: 0
+   # Optional: add dxvkVersion to record the bundled DXVK release, e.g. 2.7.1
    git add WhiskyWineVersion.plist
    git commit -m "Update WhiskyWine version to 2.5.0"
    git push origin gh-pages
    git checkout main
    ```
 
+   Example plist shape:
+   ```xml
+   <key>version</key>
+   <dict>
+       <key>major</key>
+       <integer>2</integer>
+       <key>minor</key>
+       <integer>5</integer>
+       <key>patch</key>
+       <integer>0</integer>
+   </dict>
+   <key>dxvkVersion</key>
+   <string>2.7.1</string>
+   ```
+
 5. **Verify Download URL**
    The download URL will be:
    ```
-   https://github.com/frankea/Whisky/releases/download/v2.5.0/Libraries.tar.gz
+   https://github.com/jhmk/WhiskySour/releases/download/v2.5.0/Libraries.tar.gz
    ```
    
    Note: The version in the URL must match the GitHub Release tag exactly.
+
+6. **Smoke Test DXVK**
+   - Launch Steam and confirm the client renders normally.
+   - Start one known DirectX 9 title.
+   - Start one known DirectX 11 title.
+   - Verify DXVK toggles still apply correctly inside bottles.
+   - Confirm shader cache behavior is unchanged after the update.
 
 ## Application Release Process
 
@@ -155,7 +189,7 @@ Replace the placeholder in `Whisky/Info.plist`:
    ```
 
 4. **Create Release on GitHub**
-   - Go to https://github.com/frankea/Whisky/releases/new
+   - Go to https://github.com/jhmk/WhiskySour/releases/new
    - Select tag: `v1.0.0`
    - Title: `Whisky v1.0.0`
    - Description: Copy release notes from CHANGELOG.md
@@ -170,9 +204,9 @@ Replace the placeholder in `Whisky/Info.plist`:
    ```xml
    <item>
        <title>Version 1.0.0</title>
-       <sparkle:releaseNotesLink>https://github.com/frankea/Whisky/releases/tag/v1.0.0</sparkle:releaseNotesLink>
+       <sparkle:releaseNotesLink>https://github.com/jhmk/WhiskySour/releases/tag/v1.0.0</sparkle:releaseNotesLink>
        <pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate>
-       <enclosure url="https://github.com/frankea/Whisky/releases/download/v1.0.0/Whisky.app.zip"
+       <enclosure url="https://github.com/jhmk/WhiskySour/releases/download/v1.0.0/Whisky.app.zip"
                   sparkle:version="1.0.0"
                   sparkle:shortVersionString="1.0.0"
                   length="SIZE_IN_BYTES"
@@ -200,12 +234,12 @@ Replace the placeholder in `Whisky/Info.plist`:
 ## URL Structure
 
 ### Wine Libraries
-- Version check: `https://frankea.github.io/Whisky/WhiskyWineVersion.plist`
-- Download: `https://github.com/frankea/Whisky/releases/download/v{VERSION}/Libraries.tar.gz`
+- Version check: `https://jhmk.github.io/WhiskySour/WhiskyWineVersion.plist`
+- Download: `https://github.com/jhmk/WhiskySour/releases/download/v{VERSION}/Libraries.tar.gz`
 
 ### Application Updates
-- Appcast: `https://frankea.github.io/Whisky/appcast.xml`
-- Download: `https://github.com/frankea/Whisky/releases/download/v{VERSION}/Whisky.app.zip`
+- Appcast: `https://jhmk.github.io/WhiskySour/appcast.xml`
+- Download: `https://github.com/jhmk/WhiskySour/releases/download/v{VERSION}/Whisky.app.zip`
 
 ## Testing Checklist
 

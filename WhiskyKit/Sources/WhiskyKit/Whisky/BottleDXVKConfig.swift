@@ -26,6 +26,7 @@ public struct BottleDXVKConfig: Codable, Equatable {
     var dxvk: Bool = false
     var dxvkAsync: Bool = true
     var dxvkHud: DXVKHUD = .off
+    var d3dTranslationBackend: D3DTranslationBackend = .dxvk
 
     public init() {}
 
@@ -34,5 +35,9 @@ public struct BottleDXVKConfig: Codable, Equatable {
         self.dxvk = try container.decodeIfPresent(Bool.self, forKey: .dxvk) ?? false
         self.dxvkAsync = try container.decodeIfPresent(Bool.self, forKey: .dxvkAsync) ?? true
         self.dxvkHud = try container.decodeIfPresent(DXVKHUD.self, forKey: .dxvkHud) ?? .off
+        self.d3dTranslationBackend = try container.decodeIfPresent(
+            D3DTranslationBackend.self,
+            forKey: .d3dTranslationBackend
+        ) ?? .dxvk
     }
 }

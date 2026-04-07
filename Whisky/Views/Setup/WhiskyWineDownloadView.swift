@@ -249,7 +249,13 @@ extension WhiskyWineDownloadView {
             let version = versionInfo.version
             let versionString = "\(version.major).\(version.minor).\(version.patch)"
             let downloadURLString = DistributionConfig.librariesURL(version: versionString)
-            diagnostics.record("Resolved version \(versionString)")
+            diagnostics.resolvedLibraryVersion = versionString
+            diagnostics.resolvedDXVKVersion = versionInfo.dxvkVersion
+            if let dxvkVersion = versionInfo.dxvkVersion {
+                diagnostics.record("Resolved version \(versionString) with DXVK \(dxvkVersion)")
+            } else {
+                diagnostics.record("Resolved version \(versionString)")
+            }
 
             guard let downloadURL = URL(string: downloadURLString) else {
                 downloadError = String(localized: "setup.whiskywine.error.invalidDownloadURL")

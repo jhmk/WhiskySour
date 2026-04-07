@@ -96,7 +96,7 @@ public struct BottleInfo: Codable, Equatable {
 /// - **Info**: Name, pins, and blocklist
 /// - **Wine Config**: Windows version, AVX, enhanced sync
 /// - **Metal Config**: Metal HUD, DXR, validation
-/// - **DXVK Config**: DXVK enable, async, HUD
+/// - **DXVK Config**: Direct3D backend selection, DXVK enable, async, HUD
 /// - **Performance Config**: Presets, shader cache, D3D11 mode
 ///
 /// ## Example
@@ -130,6 +130,7 @@ public struct BottleInfo: Codable, Equatable {
 /// - ``sequoiaCompatMode``
 ///
 /// ### DXVK Settings
+/// - ``d3dTranslationBackend``
 /// - ``dxvk``
 /// - ``dxvkAsync``
 /// - ``dxvkHud``
@@ -299,6 +300,15 @@ public struct BottleSettings: Codable, Equatable {
     public var dxvk: Bool {
         get { dxvkConfig.dxvk }
         set { dxvkConfig.dxvk = newValue }
+    }
+
+    /// The preferred Direct3D translation backend for this bottle.
+    ///
+    /// DXVK is the default. DXMT is experimental and intended for Apple Silicon
+    /// and macOS Tahoe setups that want to test a Metal-based backend.
+    public var d3dTranslationBackend: D3DTranslationBackend {
+        get { dxvkConfig.d3dTranslationBackend }
+        set { dxvkConfig.d3dTranslationBackend = newValue }
     }
 
     /// Whether DXVK async shader compilation is enabled.

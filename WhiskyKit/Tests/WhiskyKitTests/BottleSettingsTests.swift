@@ -35,6 +35,7 @@ final class BottleSettingsTests: XCTestCase {
         XCTAssertFalse(settings.dxvk)
         XCTAssertTrue(settings.dxvkAsync)
         XCTAssertEqual(settings.dxvkHud, .off)
+        XCTAssertEqual(settings.d3dTranslationBackend, .dxvk)
         XCTAssertFalse(settings.avxEnabled)
         XCTAssertFalse(settings.dxrEnabled)
         XCTAssertFalse(settings.metalValidation)
@@ -55,6 +56,7 @@ final class BottleSettingsTests: XCTestCase {
         settings.windowsVersion = .win11
         settings.dxvk = true
         settings.dxvkHud = .full
+        settings.d3dTranslationBackend = .dxmtExperimental
         settings.metalHud = true
         settings.enhancedSync = .esync
         settings.avxEnabled = true
@@ -74,6 +76,7 @@ final class BottleSettingsTests: XCTestCase {
         XCTAssertEqual(decoded.windowsVersion, .win11)
         XCTAssertTrue(decoded.dxvk)
         XCTAssertEqual(decoded.dxvkHud, .full)
+        XCTAssertEqual(decoded.d3dTranslationBackend, .dxmtExperimental)
         XCTAssertTrue(decoded.metalHud)
         XCTAssertEqual(decoded.enhancedSync, .esync)
         XCTAssertTrue(decoded.avxEnabled)
@@ -235,6 +238,7 @@ final class BottleSettingsTests: XCTestCase {
         XCTAssertFalse(config.dxvk)
         XCTAssertTrue(config.dxvkAsync)
         XCTAssertEqual(config.dxvkHud, .off)
+        XCTAssertEqual(config.d3dTranslationBackend, .dxvk)
     }
 
     // MARK: - BottlePerformanceConfig Tests

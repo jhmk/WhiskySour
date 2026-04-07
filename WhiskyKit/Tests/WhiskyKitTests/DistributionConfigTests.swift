@@ -24,7 +24,7 @@ final class DistributionConfigTests: XCTestCase {
     // MARK: - Base URL Tests
 
     func testBaseURL() {
-        XCTAssertEqual(DistributionConfig.baseURL, "https://frankea.github.io/Whisky")
+        XCTAssertEqual(DistributionConfig.baseURL, "https://jhmk.github.io/WhiskySour")
     }
 
     func testBaseURLIsHTTPS() {
@@ -34,7 +34,7 @@ final class DistributionConfigTests: XCTestCase {
     // MARK: - Version Plist URL Tests
 
     func testVersionPlistURL() {
-        let expectedURL = "https://frankea.github.io/Whisky/WhiskyWineVersion.plist"
+        let expectedURL = "https://jhmk.github.io/WhiskySour/WhiskyWineVersion.plist"
         XCTAssertEqual(DistributionConfig.versionPlistURL, expectedURL)
     }
 
@@ -46,7 +46,7 @@ final class DistributionConfigTests: XCTestCase {
     // MARK: - Releases Base URL Tests
 
     func testReleasesBaseURL() {
-        let expectedURL = "https://github.com/frankea/Whisky/releases/download"
+        let expectedURL = "https://github.com/jhmk/WhiskySour/releases/download"
         XCTAssertEqual(DistributionConfig.releasesBaseURL, expectedURL)
     }
 
@@ -54,10 +54,20 @@ final class DistributionConfigTests: XCTestCase {
         XCTAssertTrue(DistributionConfig.releasesBaseURL.hasPrefix("https://"))
     }
 
+    // MARK: - DXMT Release URL Tests
+
+    func testDXMTReleaseURL() {
+        XCTAssertEqual(DistributionConfig.dxmtReleaseURL, "https://github.com/3Shain/dxmt/releases/latest")
+    }
+
+    func testDXMTReleaseURLIsValid() {
+        XCTAssertNotNil(URL(string: DistributionConfig.dxmtReleaseURL))
+    }
+
     // MARK: - Appcast URL Tests
 
     func testAppcastURL() {
-        let expectedURL = "https://frankea.github.io/Whisky/appcast.xml"
+        let expectedURL = "https://jhmk.github.io/WhiskySour/appcast.xml"
         XCTAssertEqual(DistributionConfig.appcastURL, expectedURL)
     }
 
@@ -71,7 +81,7 @@ final class DistributionConfigTests: XCTestCase {
     func testLibrariesURLWithStandardVersion() {
         let version = "2.5.0"
         let url = DistributionConfig.librariesURL(version: version)
-        let expectedURL = "https://github.com/frankea/Whisky/releases/download/v2.5.0/Libraries.tar.gz"
+        let expectedURL = "https://github.com/jhmk/WhiskySour/releases/download/v2.5.0/Libraries.tar.gz"
 
         XCTAssertEqual(url, expectedURL)
     }
@@ -79,7 +89,7 @@ final class DistributionConfigTests: XCTestCase {
     func testLibrariesURLWithSingleDigitVersion() {
         let version = "1.0.0"
         let url = DistributionConfig.librariesURL(version: version)
-        let expectedURL = "https://github.com/frankea/Whisky/releases/download/v1.0.0/Libraries.tar.gz"
+        let expectedURL = "https://github.com/jhmk/WhiskySour/releases/download/v1.0.0/Libraries.tar.gz"
 
         XCTAssertEqual(url, expectedURL)
     }
@@ -87,7 +97,7 @@ final class DistributionConfigTests: XCTestCase {
     func testLibrariesURLWithMultiDigitVersion() {
         let version = "10.20.30"
         let url = DistributionConfig.librariesURL(version: version)
-        let expectedURL = "https://github.com/frankea/Whisky/releases/download/v10.20.30/Libraries.tar.gz"
+        let expectedURL = "https://github.com/jhmk/WhiskySour/releases/download/v10.20.30/Libraries.tar.gz"
 
         XCTAssertEqual(url, expectedURL)
     }
@@ -112,7 +122,7 @@ final class DistributionConfigTests: XCTestCase {
         let url = DistributionConfig.librariesURL(version: version)
 
         // Verify the URL follows the expected pattern
-        let pattern = "^https://github\\.com/frankea/Whisky/releases/download/"
+        let pattern = "^https://github\\.com/jhmk/WhiskySour/releases/download/"
             + "v\\d+\\.\\d+\\.\\d+/Libraries\\.tar\\.gz$"
         guard let regex = try? NSRegularExpression(pattern: pattern) else {
             XCTFail("Invalid regex pattern: \(pattern)")
@@ -167,7 +177,7 @@ final class DistributionConfigTests: XCTestCase {
         )
         XCTAssertEqual(
             expectedURL,
-            "https://frankea.github.io/Whisky/WhiskyWineVersion.plist",
+            "https://jhmk.github.io/WhiskySour/WhiskyWineVersion.plist",
             "WhiskyWineInstaller should use GitHub Pages URL"
         )
     }
@@ -220,7 +230,7 @@ final class DistributionConfigTests: XCTestCase {
         let downloadURLString = DistributionConfig.librariesURL(version: versionString)
 
         // Verify the complete URL
-        let expectedURL = "https://github.com/frankea/Whisky/releases/download/v2.5.0/Libraries.tar.gz"
+        let expectedURL = "https://github.com/jhmk/WhiskySour/releases/download/v2.5.0/Libraries.tar.gz"
         XCTAssertEqual(downloadURLString, expectedURL)
 
         // Verify URL is valid
@@ -292,13 +302,13 @@ final class DistributionConfigTests: XCTestCase {
     func testURLConstructionEdgeCases() {
         // Test with zero version
         let zeroURL = DistributionConfig.librariesURL(version: "0.0.0")
-        let expectedZeroURL = "https://github.com/frankea/Whisky/releases/download/v0.0.0/Libraries.tar.gz"
+        let expectedZeroURL = "https://github.com/jhmk/WhiskySour/releases/download/v0.0.0/Libraries.tar.gz"
         XCTAssertEqual(zeroURL, expectedZeroURL)
         XCTAssertNotNil(URL(string: zeroURL))
 
         // Test with large version numbers
         let largeURL = DistributionConfig.librariesURL(version: "999.999.999")
-        let expectedLargeURL = "https://github.com/frankea/Whisky/releases/download/v999.999.999/Libraries.tar.gz"
+        let expectedLargeURL = "https://github.com/jhmk/WhiskySour/releases/download/v999.999.999/Libraries.tar.gz"
         XCTAssertEqual(largeURL, expectedLargeURL)
         XCTAssertNotNil(URL(string: largeURL))
     }
@@ -365,7 +375,7 @@ final class DistributionConfigTests: XCTestCase {
         let versionURL = URL(string: DistributionConfig.versionPlistURL)
         XCTAssertNotNil(versionURL, "Version plist URL should be valid")
         XCTAssertEqual(versionURL?.scheme, "https")
-        XCTAssertEqual(versionURL?.host, "frankea.github.io")
+        XCTAssertEqual(versionURL?.host, "jhmk.github.io")
 
         // Libraries download URL
         let librariesURL = URL(string: DistributionConfig.librariesURL(version: "2.5.0"))
@@ -377,7 +387,7 @@ final class DistributionConfigTests: XCTestCase {
         let appcastURL = URL(string: DistributionConfig.appcastURL)
         XCTAssertNotNil(appcastURL, "Appcast URL should be valid")
         XCTAssertEqual(appcastURL?.scheme, "https")
-        XCTAssertEqual(appcastURL?.host, "frankea.github.io")
+        XCTAssertEqual(appcastURL?.host, "jhmk.github.io")
     }
 }
 

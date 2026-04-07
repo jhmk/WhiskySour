@@ -24,7 +24,7 @@ import WhiskyKit
 // Comprehensive launcher detection and configuration requires extensive logic
 
 private let detectionLogger = Logger(
-    subsystem: Bundle.main.bundleIdentifier ?? "com.franke.Whisky",
+    subsystem: Bundle.main.bundleIdentifier ?? "com.jhmk.WhiskySour",
     category: "LauncherDetection"
 )
 

@@ -19,6 +19,37 @@
 import Foundation
 
 extension FileManager {
+    func replaceFiles(
+        in destinationDirectory: URL, withContentsIn sourceDirectory: URL, makeOriginalCopy: Bool = false
+    ) throws {
+        let keys: [URLResourceKey] = [.isRegularFileKey]
+        let enumerator = FileManager.default.enumerator(
+            at: sourceDirectory,
+            includingPropertiesForKeys: keys,
+            options: [.skipsHiddenFiles]
+        )
+
+        let sourceRoot = sourceDirectory.path(percentEncoded: false)
+        let sourcePrefix = sourceRoot.hasSuffix("/") ? sourceRoot : sourceRoot + "/"
+
+        while let fileURL = enumerator?.nextObject() as? URL {
+            guard fileURL.hasDirectoryPath == false else { continue }
+            let filePath = fileURL.path(percentEncoded: false)
+            let relativePath = filePath.hasPrefix(sourcePrefix) ? String(filePath.dropFirst(sourcePrefix.count)) : fileURL
+                .lastPathComponent
+            let destinationURL = destinationDirectory.appending(path: relativePath)
+            try FileManager.default.createDirectory(
+                at: destinationURL.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+            try FileManager.default.replaceFile(
+                at: destinationURL,
+                with: fileURL,
+                makeOriginalCopy: makeOriginalCopy
+            )
+        }
+    }
+
     func replaceDLLs(
         in destinationDirectory: URL, withContentsIn sourceDirectory: URL, makeOriginalCopy: Bool = false
     ) throws {
@@ -27,13 +58,18 @@ extension FileManager {
         )
 
         while let fileURL = enumerator?.nextObject() as? URL {
-            guard fileURL.pathExtension == "dll" else { return }
+            guard fileURL.pathExtension == "dll" else { continue }
             let originalURL = destinationDirectory.appending(path: fileURL.lastPathComponent)
             try FileManager.default.replaceFile(at: originalURL, with: fileURL, makeOriginalCopy: makeOriginalCopy)
         }
     }
 
     func replaceFile(at originalURL: URL, with replacementURL: URL, makeOriginalCopy: Bool = true) throws {
+        try createDirectory(
+            at: originalURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+
         if fileExists(atPath: originalURL.path(percentEncoded: false)) {
             if makeOriginalCopy {
                 let copyURL = originalURL.appendingPathExtension("orig")
@@ -47,6 +83,8 @@ extension FileManager {
                 try FileManager.default.removeItem(at: originalURL)
             }
 
+            try FileManager.default.copyItem(at: replacementURL, to: originalURL)
+        } else {
             try FileManager.default.copyItem(at: replacementURL, to: originalURL)
         }
     }

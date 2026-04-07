@@ -265,7 +265,9 @@ final class FileManagerReplaceFileTests: XCTestCase {
 
         try FileManager.default.replaceFile(at: originalURL, with: replacementURL)
 
-        XCTAssertFalse(FileManager.default.fileExists(atPath: originalURL.path(percentEncoded: false)))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: originalURL.path(percentEncoded: false)))
+        let newContent = try String(contentsOf: originalURL, encoding: .utf8)
+        XCTAssertEqual(newContent, "new content")
     }
 
     func testReplaceFileRemovesExistingBackup() throws {
@@ -343,5 +345,45 @@ final class FileManagerReplaceDLLsTests: XCTestCase {
 
         let backupURL = destDLL.appendingPathExtension("orig")
         XCTAssertTrue(FileManager.default.fileExists(atPath: backupURL.path(percentEncoded: false)))
+    }
+}
+
+// MARK: - FileManager.replaceFiles Tests
+
+final class FileManagerReplaceFilesTests: XCTestCase {
+    var tempDir: URL!
+    var destinationDir: URL!
+    var sourceDir: URL!
+
+    override func setUp() {
+        super.setUp()
+        tempDir = FileManager.default.temporaryDirectory.appending(path: "files_test_\(UUID().uuidString)")
+        destinationDir = tempDir.appending(path: "destination")
+        sourceDir = tempDir.appending(path: "source")
+
+        try? FileManager.default.createDirectory(at: destinationDir, withIntermediateDirectories: true)
+        try? FileManager.default.createDirectory(at: sourceDir, withIntermediateDirectories: true)
+    }
+
+    override func tearDown() {
+        try? FileManager.default.removeItem(at: tempDir)
+        super.tearDown()
+    }
+
+    func testReplaceFilesPreservesNestedPaths() throws {
+        let nestedSource = sourceDir.appending(path: "Wine").appending(path: "lib").appending(path: "wine")
+        let nestedDestination = destinationDir.appending(path: "Wine").appending(path: "lib").appending(path: "wine")
+        try FileManager.default.createDirectory(at: nestedSource, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: nestedDestination, withIntermediateDirectories: true)
+
+        let sourceFile = nestedSource.appending(path: "dxmt-runtime.dylib")
+        let destinationFile = nestedDestination.appending(path: "dxmt-runtime.dylib")
+        try Data("new runtime".utf8).write(to: sourceFile)
+
+        try FileManager.default.replaceFiles(in: nestedDestination, withContentsIn: nestedSource)
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: destinationFile.path(percentEncoded: false)))
+        let content = try String(contentsOf: destinationFile, encoding: .utf8)
+        XCTAssertEqual(content, "new runtime")
     }
 }

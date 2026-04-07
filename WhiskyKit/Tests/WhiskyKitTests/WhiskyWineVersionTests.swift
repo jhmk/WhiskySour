@@ -35,6 +35,20 @@ final class WhiskyWineVersionDecodingTests: XCTestCase {
         XCTAssertEqual(versionInfo.version.minor, 5)
         XCTAssertEqual(versionInfo.version.patch, 0)
         XCTAssertEqual(versionInfo.version, SemanticVersion(2, 5, 0))
+        XCTAssertNil(versionInfo.dxvkVersion)
+    }
+
+    func testDecodeWithDXVKVersion() throws {
+        let plist: [String: Any] = [
+            "version": ["major": 2, "minor": 5, "patch": 0],
+            "dxvkVersion": "2.7.1"
+        ]
+
+        let data = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
+        let versionInfo = try PropertyListDecoder().decode(WhiskyWineVersion.self, from: data)
+
+        XCTAssertEqual(versionInfo.version, SemanticVersion(2, 5, 0))
+        XCTAssertEqual(versionInfo.dxvkVersion, "2.7.1")
     }
 
     func testDecodeWithDifferentVersions() throws {
@@ -90,6 +104,29 @@ final class WhiskyWineVersionEncodingTests: XCTestCase {
         XCTAssertEqual(versionDict["major"] as? Int, 2)
         XCTAssertEqual(versionDict["minor"] as? Int, 5)
         XCTAssertEqual(versionDict["patch"] as? Int, 0)
+        XCTAssertNil(plist["dxvkVersion"])
+    }
+
+    func testEncodeWithDXVKVersion() throws {
+        let versionInfo = WhiskyWineVersion(version: SemanticVersion(2, 5, 0), dxvkVersion: "2.7.1")
+
+        let encoder = PropertyListEncoder()
+        encoder.outputFormat = .xml
+        let data = try encoder.encode(versionInfo)
+
+        let plist = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any]
+
+        XCTAssertNotNil(plist, "Encoded plist should be valid")
+        guard let plist else { return }
+
+        XCTAssertEqual(plist["dxvkVersion"] as? String, "2.7.1")
+        guard let versionDict = plist["version"] as? [String: Any] else {
+            XCTFail("Version dictionary should exist")
+            return
+        }
+        XCTAssertEqual(versionDict["major"] as? Int, 2)
+        XCTAssertEqual(versionDict["minor"] as? Int, 5)
+        XCTAssertEqual(versionDict["patch"] as? Int, 0)
     }
 
     func testEncodeWithDifferentVersions() throws {
@@ -142,6 +179,21 @@ final class WhiskyWineVersionRoundTripTests: XCTestCase {
         XCTAssertEqual(decoded.version.major, 2)
         XCTAssertEqual(decoded.version.minor, 5)
         XCTAssertEqual(decoded.version.patch, 0)
+        XCTAssertNil(decoded.dxvkVersion)
+    }
+
+    func testRoundTripWithDXVKVersion() throws {
+        let originalVersion = SemanticVersion(2, 5, 0)
+        let original = WhiskyWineVersion(version: originalVersion, dxvkVersion: "2.7.1")
+
+        let encoder = PropertyListEncoder()
+        encoder.outputFormat = .xml
+        let data = try encoder.encode(original)
+
+        let decoded = try PropertyListDecoder().decode(WhiskyWineVersion.self, from: data)
+
+        XCTAssertEqual(decoded.version, originalVersion)
+        XCTAssertEqual(decoded.dxvkVersion, "2.7.1")
     }
 
     func testRoundTripWithMultipleVersions() throws {

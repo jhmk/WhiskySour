@@ -216,9 +216,10 @@ public class Wine {
     /// This is the primary method for launching Windows applications. It handles DXVK setup
     /// if enabled in the bottle settings and executes the program using `wine start /unix`.
     ///
-    /// - Note: If DXVK is enabled in the bottle's settings (`bottle.settings.dxvk`),
-    ///   the DXVK libraries will be automatically installed into the bottle before
-    ///   execution. This ensures Direct3D games use Vulkan translation for better
+    /// - Note: If the bottle selects the DXVK backend, the DXVK libraries will be
+    ///   automatically installed into the bottle before execution. If the bottle
+    ///   selects the experimental DXMT backend, its libraries are installed instead.
+    ///   This ensures Direct3D games use the selected translation layer for better
     ///   performance on macOS.
     ///
     /// ## Example
@@ -249,13 +250,18 @@ public class Wine {
         // before calling this method. The detection logic uses LauncherDetection utility
         // which is in the Whisky app target, not WhiskyKit framework.
 
-        // Enable DXVK if needed (either explicitly enabled or auto-enabled for launchers)
-        let shouldEnableDXVK = bottle.settings.dxvk ||
-            (bottle.settings.autoEnableDXVK &&
-                bottle.settings.detectedLauncher?.requiresDXVK == true)
+        // Enable the selected Direct3D translation backend before launch.
+        if bottle.settings.d3dTranslationBackend == .dxmtExperimental {
+            try enableDXMT(bottle: bottle)
+        } else {
+            // Enable DXVK if needed (either explicitly enabled or auto-enabled for launchers)
+            let shouldEnableDXVK = bottle.settings.dxvk ||
+                (bottle.settings.autoEnableDXVK &&
+                    bottle.settings.detectedLauncher?.requiresDXVK == true)
 
-        if shouldEnableDXVK {
-            try enableDXVK(bottle: bottle)
+            if shouldEnableDXVK {
+                try enableDXVK(bottle: bottle)
+            }
         }
 
         // Disable App Nap if requested to prevent macOS from throttling Wine processes.
@@ -546,6 +552,57 @@ public class Wine {
         )
     }
 
+    /// Installs DXMT libraries into the bundled Wine runtime and bottle prefix.
+    ///
+    /// DXMT is a Metal-based Direct3D 10/11 translation layer for Apple Silicon.
+    /// The bundle is expected to provide the Wine runtime files under `Wine/lib/wine`
+    /// and prefix DLLs under `x64`/`x32` directories.
+    ///
+    /// - Parameter bottle: The ``Bottle`` to install DXMT into.
+    /// - Throws: An error if the DXMT bundle is missing or cannot be copied.
+    @MainActor
+    public static func enableDXMT(bottle: Bottle) throws {
+        guard WhiskyWineInstaller.isDXMTInstalled() else {
+            throw WineInterfaceError.missingDXMTBundle(WhiskyWineInstaller.dxmtFolder.path)
+        }
+
+        let runtimeSource = WhiskyWineInstaller.dxmtFolder.appending(path: "Wine").appending(path: "lib").appending(path: "wine")
+        let runtimeDestination = WhiskyWineInstaller.libraryFolder
+            .appending(path: "Wine")
+            .appending(path: "lib")
+            .appending(path: "wine")
+
+        if FileManager.default.fileExists(atPath: runtimeSource.path) {
+            try FileManager.default.replaceFiles(
+                in: runtimeDestination,
+                withContentsIn: runtimeSource
+            )
+        }
+
+        let prefixSystem32 = bottle.url.appending(path: "drive_c")
+            .appending(path: "windows")
+            .appending(path: "system32")
+        let prefixSysWow64 = bottle.url.appending(path: "drive_c")
+            .appending(path: "windows")
+            .appending(path: "syswow64")
+
+        let x64Source = WhiskyWineInstaller.dxmtFolder.appending(path: "x64")
+        if FileManager.default.fileExists(atPath: x64Source.path) {
+            try FileManager.default.replaceFiles(
+                in: prefixSystem32,
+                withContentsIn: x64Source
+            )
+        }
+
+        let x32Source = WhiskyWineInstaller.dxmtFolder.appending(path: "x32")
+        if FileManager.default.fileExists(atPath: x32Source.path) {
+            try FileManager.default.replaceFiles(
+                in: prefixSysWow64,
+                withContentsIn: x32Source
+            )
+        }
+    }
+
     /// Reinitializes a Wine prefix to repair missing user directories.
     ///
     /// This method runs `wineboot --init` to reinitialize the Wine prefix,
@@ -572,6 +629,8 @@ public class Wine {
 enum WineInterfaceError: Error {
     /// The response from Wine was invalid or could not be parsed.
     case invalidResponse
+    /// The DXMT runtime bundle is missing from the installed libraries folder.
+    case missingDXMTBundle(String)
 }
 
 // MARK: - Logging Support

@@ -68,6 +68,8 @@ final class WhiskyWineSetupDiagnosticsTests: XCTestCase {
         diagnostics.record("event")
         diagnostics.versionPlistURL = "https://example.com/version.plist"
         diagnostics.downloadURL = "https://example.com/whiskywine.tar.gz"
+        diagnostics.resolvedLibraryVersion = "2.5.0"
+        diagnostics.resolvedDXVKVersion = "2.7.1"
         diagnostics.downloadStartedAt = Date()
         diagnostics.installStartedAt = Date()
 
@@ -78,6 +80,8 @@ final class WhiskyWineSetupDiagnosticsTests: XCTestCase {
         XCTAssertTrue(diagnostics.events.isEmpty)
         XCTAssertNil(diagnostics.versionPlistURL)
         XCTAssertNil(diagnostics.downloadURL)
+        XCTAssertNil(diagnostics.resolvedLibraryVersion)
+        XCTAssertNil(diagnostics.resolvedDXVKVersion)
         XCTAssertNil(diagnostics.downloadStartedAt)
         XCTAssertNil(diagnostics.installStartedAt)
     }
@@ -129,5 +133,17 @@ final class WhiskyWineSetupDiagnosticsTests: XCTestCase {
         XCTAssertFalse(report.contains("#fragment"))
         XCTAssertTrue(report.contains("https://example.com/version.plist"))
         XCTAssertTrue(report.contains("https://example.com/whiskywine.tar.gz"))
+    }
+
+    func testReportIncludesVersionSection() {
+        var diagnostics = WhiskyWineSetupDiagnostics()
+        diagnostics.resolvedLibraryVersion = "2.5.0"
+        diagnostics.resolvedDXVKVersion = "2.7.1"
+
+        let report = diagnostics.reportString(stage: "download")
+
+        XCTAssertTrue(report.contains("[VERSION]"))
+        XCTAssertTrue(report.contains("Library version: 2.5.0"))
+        XCTAssertTrue(report.contains("DXVK version: 2.7.1"))
     }
 }

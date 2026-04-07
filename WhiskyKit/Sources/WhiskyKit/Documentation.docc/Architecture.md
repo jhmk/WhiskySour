@@ -38,7 +38,7 @@ The bottle management layer handles the lifecycle of Wine prefixes:
 | ``BottleSettings`` | Stores configuration for a bottle |
 | ``BottleWineConfig`` | Wine-specific settings (Windows version, sync mode) |
 | ``BottleMetalConfig`` | Metal and graphics settings |
-| ``BottleDXVKConfig`` | DXVK configuration for DirectX translation |
+| ``BottleDXVKConfig`` | DXVK and DXMT configuration for DirectX translation |
 | ``BottlePerformanceConfig`` | Performance optimization settings |
 
 Each bottle is stored as a directory containing:

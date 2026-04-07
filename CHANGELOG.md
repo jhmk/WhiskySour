@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-04-07
+
+### Added
+- Experimental DXMT backend plumbing for Apple Silicon and Tahoe bottles
+- In-app DXMT install/update action with local folder reveal and release-page fallback
+- Fork-specific bundle identifiers and distribution URLs for `jhmk/WhiskySour`
+
+### Changed
+- Kept DXVK as the default Direct3D backend while exposing DXMT as opt-in
+- Preserved Wine `11.0` while refreshing the DXVK release workflow and metadata plumbing
+- Updated the WhiskySour fork release notes, docs, and diagnostics to reflect the new backend and fork namespace
+
 ### Added
 - Terminal application selection: choose between Terminal, iTerm2, or Warp (Refs #47, upstream #911)
 - Duplicate bottle feature for cloning bottles without export/import (Refs #47, upstream #822)
@@ -102,6 +114,7 @@ When adding entries to this changelog, use the following categories:
 - **Security** - Vulnerability fixes
 - **Documentation** - Documentation-only changes
 
-[Unreleased]: https://github.com/frankea/Whisky/compare/v3.0.0...HEAD
-[3.0.0]: https://github.com/frankea/Whisky/releases/tag/v3.0.0
-[2.5.0]: https://github.com/frankea/Whisky/releases/tag/v2.5.0
+[Unreleased]: https://github.com/jhmk/WhiskySour/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/jhmk/WhiskySour/releases/tag/v3.1.0
+[3.0.0]: https://github.com/jhmk/WhiskySour/releases/tag/v3.0.0
+[2.5.0]: https://github.com/jhmk/WhiskySour/releases/tag/v2.5.0

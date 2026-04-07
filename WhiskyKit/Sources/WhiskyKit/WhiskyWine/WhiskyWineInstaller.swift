@@ -85,11 +85,19 @@ public class WhiskyWineInstaller {
     /// This folder contains `wine64`, `wineserver`, and other Wine executables.
     public static let binFolder: URL = libraryFolder.appending(path: "Wine").appending(path: "bin")
 
+    /// The folder containing the optional DXMT bundle.
+    public static let dxmtFolder: URL = libraryFolder.appending(path: "DXMT")
+
     /// Checks whether WhiskyWine is currently installed.
     ///
     /// - Returns: `true` if WhiskyWine is installed and has a valid version file.
     public static func isWhiskyWineInstalled() -> Bool {
         whiskyWineVersion() != nil
+    }
+
+    /// Checks whether the optional DXMT bundle is installed alongside WhiskyWine.
+    public static func isDXMTInstalled() -> Bool {
+        FileManager.default.fileExists(atPath: dxmtFolder.path)
     }
 
     /// Installs WhiskyWine from a downloaded tarball.

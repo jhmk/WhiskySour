@@ -253,6 +253,16 @@ final class WhiskyWineInstallerPathTests: XCTestCase {
 
         XCTAssertTrue(path.contains("bin"))
     }
+
+    func testDXMTFolderPath() {
+        let path = WhiskyWineInstaller.dxmtFolder.path
+
+        XCTAssertTrue(path.contains("DXMT"))
+    }
+
+    func testDXMTInstalledReflectsBundlePresence() {
+        XCTAssertFalse(WhiskyWineInstaller.isDXMTInstalled())
+    }
 }
 
 // MARK: - Wine Binary Path Tests

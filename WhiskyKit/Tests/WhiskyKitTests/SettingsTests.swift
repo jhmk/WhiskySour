@@ -244,6 +244,7 @@ final class BottleDXVKConfigTests: XCTestCase {
         XCTAssertFalse(config.dxvk)
         XCTAssertTrue(config.dxvkAsync)
         XCTAssertEqual(config.dxvkHud, .off)
+        XCTAssertEqual(config.d3dTranslationBackend, .dxvk)
     }
 
     func testRoundTrip() throws {
@@ -251,6 +252,7 @@ final class BottleDXVKConfigTests: XCTestCase {
         original.dxvk = true
         original.dxvkAsync = false
         original.dxvkHud = .full
+        original.d3dTranslationBackend = .dxmtExperimental
 
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .xml
@@ -261,6 +263,7 @@ final class BottleDXVKConfigTests: XCTestCase {
         XCTAssertTrue(decoded.dxvk)
         XCTAssertFalse(decoded.dxvkAsync)
         XCTAssertEqual(decoded.dxvkHud, .full)
+        XCTAssertEqual(decoded.d3dTranslationBackend, .dxmtExperimental)
     }
 
     func testDecodeWithMissingValuesUsesDefaults() throws {
@@ -272,5 +275,6 @@ final class BottleDXVKConfigTests: XCTestCase {
         XCTAssertFalse(config.dxvk)
         XCTAssertTrue(config.dxvkAsync)
         XCTAssertEqual(config.dxvkHud, .off)
+        XCTAssertEqual(config.d3dTranslationBackend, .dxvk)
     }
 }
