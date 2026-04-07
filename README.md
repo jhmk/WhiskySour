@@ -1,6 +1,6 @@
 <div align="center">
 
-  # Whisky 🥃
+# WhiskeySour 🥃
   *Wine but a bit stronger*
 
   > **Community Fork** - This is an independent fork maintained by [@jhmk](https://github.com/jhmk).
@@ -14,7 +14,7 @@
 
 ## Overview
 
-Whisky provides a clean and easy-to-use graphical wrapper for Wine built in native SwiftUI. You can make and manage bottles, install and run Windows apps and games, and unlock the full potential of your Mac with no technical knowledge required.
+WhiskeySour provides a clean and easy-to-use graphical wrapper for Wine built in native SwiftUI. You can make and manage bottles, install and run Windows apps and games, and unlock the full potential of your Mac with no technical knowledge required.
 
 <img width="650" alt="Config" src="./images/config-screenshot.png">
 
