@@ -34,24 +34,21 @@ download_and_extract() {
 
 download_and_extract "$WINE_URL"
 download_and_extract "$DXVK_URL"
-for url in "${CABEXTRACT_URLS[@]}"; do
-  if download_and_extract "$url"; then
-    break
-  else
-    rm -f "$REPO/$(basename "$url")"
-  fi
-done
-
-# Locate cabextract binary and copy it to Libraries/cabextract
 CABEXTRACT_TARGET="$LIBDIR/cabextract"
-if [[ ! -f "$CABEXTRACT_TARGET" ]]; then
+for url in "${CABEXTRACT_URLS[@]}"; do
+  download_and_extract "$url"
   CABEXTRACT_BIN=$(find "$LIBDIR" -name cabextract -type f -perm +111 -print -quit)
   if [[ -n "$CABEXTRACT_BIN" ]]; then
     cp "$CABEXTRACT_BIN" "$CABEXTRACT_TARGET"
     chmod +x "$CABEXTRACT_TARGET"
+    break
   else
-    echo "warning: cabextract binary not found inside downloaded archives"
+    echo "cabextract binary not found in $url, trying next URL"
   fi
+done
+
+if [[ ! -f "$CABEXTRACT_TARGET" ]]; then
+  echo "warning: cabextract binary still missing after all downloads"
 fi
 
 if [[ -f "$TARBALL" ]]; then
