@@ -7,7 +7,10 @@ TARBALL="$REPO/Libraries.tar.gz"
 
 WINE_URL="https://github.com/Gcenx/macOS_Wine_builds/releases/download/11.0/wine-stable-11.0-osx64.tar.xz"
 DXVK_URL="https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz"
-CABEXTRACT_URL="https://github.com/deepin-community/cabextract/archive/refs/tags/1.11-1.tar.gz"
+CABEXTRACT_URLS=(
+  "https://github.com/deepin-community/cabextract/archive/refs/tags/1.11-1.tar.gz"
+  "https://github.com/baskerville/cabextract/releases/download/1.12/cabextract-1.12.tar.gz"
+)
 
 mkdir -p "$LIBDIR"
 
@@ -31,7 +34,25 @@ download_and_extract() {
 
 download_and_extract "$WINE_URL"
 download_and_extract "$DXVK_URL"
-download_and_extract "$CABEXTRACT_URL"
+for url in "${CABEXTRACT_URLS[@]}"; do
+  if download_and_extract "$url"; then
+    break
+  else
+    rm -f "$REPO/$(basename "$url")"
+  fi
+done
+
+# Locate cabextract binary and copy it to Libraries/cabextract
+CABEXTRACT_TARGET="$LIBDIR/cabextract"
+if [[ ! -f "$CABEXTRACT_TARGET" ]]; then
+  CABEXTRACT_BIN=$(find "$LIBDIR" -name cabextract -type f -perm +111 -print -quit)
+  if [[ -n "$CABEXTRACT_BIN" ]]; then
+    cp "$CABEXTRACT_BIN" "$CABEXTRACT_TARGET"
+    chmod +x "$CABEXTRACT_TARGET"
+  else
+    echo "warning: cabextract binary not found inside downloaded archives"
+  fi
+fi
 
 if [[ -f "$TARBALL" ]]; then
   rm -f "$TARBALL"
