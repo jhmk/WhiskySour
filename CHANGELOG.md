@@ -8,8 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- Rename the main bundle and CLI instructions from Whisky to WhiskeySour so the app name matches the fork branding.
 - Record upcoming frontend/diagnostics adjustments here before cutting the next release so the workflow remains ready-to-publish.
+
+## [3.1.2] - 2026-04-07
+
+### Added
+- `scripts/build-and-run.sh` builds `Whisky.app` and immediately opens it so the first launch downloads the Wine/DXVK runtime automatically.
+
+### Changed
+- Renamed the bundle and documentation from “Whisky” to “WhiskeySour” to match the fork’s identity.
 ## [3.1.1] - 2026-04-07
 
 ### Changed
