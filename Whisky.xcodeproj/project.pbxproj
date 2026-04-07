@@ -142,7 +142,7 @@
 		6E355E5729D78249002D83BE /* ConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigView.swift; sourceTree = "<group>"; };
 		6E355E5929D782B2002D83BE /* ProgramsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramsView.swift; sourceTree = "<group>"; };
 		6E355E5D29D7D85D002D83BE /* ProgramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramView.swift; sourceTree = "<group>"; };
-		6E40495229CCA19C006E3F1B /* Whisky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whisky.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E40495229CCA19C006E3F1B /* WhiskeySour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhiskeySour.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E40495529CCA19C006E3F1B /* WhiskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiskyApp.swift; sourceTree = "<group>"; };
 		6E40495729CCA19C006E3F1B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6E40495929CCA19C006E3F1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -310,7 +310,7 @@
 		6E40495329CCA19C006E3F1B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6E40495229CCA19C006E3F1B /* Whisky.app */,
+				6E40495229CCA19C006E3F1B /* WhiskeySour.app */,
 				6E70A4982A9A2197007799E9 /* WhiskyCmd */,
 				6EFDF64A2AAE2DA800EF622F /* WhiskyThumbnail.appex */,
 			);
@@ -464,7 +464,7 @@
 				8C2AEFC72AED79B700CB568F /* WhiskyKit */,
 			);
 			productName = Whisky;
-			productReference = 6E40495229CCA19C006E3F1B /* Whisky.app */;
+			productReference = 6E40495229CCA19C006E3F1B /* WhiskeySour.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6E70A4972A9A2197007799E9 /* WhiskyCmd */ = {

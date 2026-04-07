@@ -253,7 +253,7 @@ Logger.wineKit.debug("""
 
 1. **macOS App Sandbox**
    - Leverage macOS containment features
-   - Limit Whisky.app's own permissions
+- Limit WhiskeySour.app's own permissions
    - Additional defense layer
 
 2. **Network Monitoring**
@@ -292,4 +292,3 @@ Logger.wineKit.debug("""
 ---
 
 **This document addresses code review feedback regarding CEF sandbox security implications.**
-

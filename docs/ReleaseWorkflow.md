@@ -147,7 +147,7 @@ Replace the placeholder in `Whisky/Info.plist`:
 ### Prerequisites
 
 1. Application built and signed (if applicable)
-2. Application packaged as `Whisky.app.zip`
+2. Application packaged as `WhiskeySour.app.zip`
 3. Sparkle EdDSA signature generated for the release
 4. Version number determined (e.g., `1.0.0`)
 
@@ -193,7 +193,7 @@ Replace the placeholder in `Whisky/Info.plist`:
    - Select tag: `v1.0.0`
    - Title: `Whisky v1.0.0`
    - Description: Copy release notes from CHANGELOG.md
-   - Upload `Whisky.app.zip` as a release asset
+   - Upload `WhiskeySour.app.zip` as a release asset
    - Publish release
 
 5. **Update appcast.xml on gh-pages**
@@ -206,7 +206,7 @@ Replace the placeholder in `Whisky/Info.plist`:
        <title>Version 1.0.0</title>
        <sparkle:releaseNotesLink>https://github.com/jhmk/WhiskySour/releases/tag/v1.0.0</sparkle:releaseNotesLink>
        <pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate>
-       <enclosure url="https://github.com/jhmk/WhiskySour/releases/download/v1.0.0/Whisky.app.zip"
+      <enclosure url="https://github.com/jhmk/WhiskySour/releases/download/v1.0.0/WhiskeySour.app.zip"
                   sparkle:version="1.0.0"
                   sparkle:shortVersionString="1.0.0"
                   length="SIZE_IN_BYTES"
@@ -239,7 +239,7 @@ Replace the placeholder in `Whisky/Info.plist`:
 
 ### Application Updates
 - Appcast: `https://jhmk.github.io/WhiskySour/appcast.xml`
-- Download: `https://github.com/jhmk/WhiskySour/releases/download/v{VERSION}/Whisky.app.zip`
+- Download: `https://github.com/jhmk/WhiskySour/releases/download/v{VERSION}/WhiskeySour.app.zip`
 
 ## Testing Checklist
 
@@ -258,7 +258,7 @@ Before publishing a release:
 
 ### Download Fails
 - Verify release tag matches URL exactly (case-sensitive)
-- Check asset filename matches URL (`Libraries.tar.gz` or `Whisky.app.zip`)
+- Check asset filename matches URL (`Libraries.tar.gz` or `WhiskeySour.app.zip`)
 - Verify release is published (not draft)
 
 ### Version Check Fails

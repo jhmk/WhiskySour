@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.1.2] - 2026-04-07
 
 ### Added
-- `scripts/build-and-run.sh` builds `Whisky.app` and immediately opens it so the first launch downloads the Wine/DXVK runtime automatically.
+- `scripts/build-and-run.sh` builds `WhiskeySour.app` and immediately opens it so the first launch downloads the Wine/DXVK runtime automatically.
 
 ### Changed
 - Renamed the bundle and documentation from “Whisky” to “WhiskeySour” to match the fork’s identity.

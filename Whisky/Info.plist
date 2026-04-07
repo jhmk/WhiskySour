@@ -53,6 +53,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleDisplayName</key>
+	<string>WhiskeySour</string>
+	<key>CFBundleName</key>
+	<string>WhiskeySour</string>
 	<key>SUFeedURL</key>
 	<string>https://jhmk.github.io/WhiskySour/appcast.xml</string>
 	<key>SUPublicEDKey</key>

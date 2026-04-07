@@ -12,7 +12,7 @@
             <title>Version X.Y.Z</title>
             <sparkle:releaseNotesLink>https://github.com/jhmk/WhiskySour/releases/tag/vX.Y.Z</sparkle:releaseNotesLink>
             <pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate>
-            <enclosure url="https://github.com/jhmk/WhiskySour/releases/download/vX.Y.Z/Whisky.app.zip"
+            <enclosure url="https://github.com/jhmk/WhiskySour/releases/download/vX.Y.Z/WhiskeySour.app.zip"
                        sparkle:version="X.Y.Z"
                        sparkle:shortVersionString="X.Y.Z"
                        length="SIZE_IN_BYTES"
