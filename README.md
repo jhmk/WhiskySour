@@ -39,6 +39,11 @@ Whisky provides a clean and easy-to-use graphical wrapper for Wine built in nati
 - **Launcher Compatibility** - Built-in support for Steam, Epic, EA App, Rockstar, Battle.net, and more
 - **Experimental DXMT Backend** - Optional Metal-based Direct3D backend for Apple Silicon and Tahoe
 - **Controller Support** - SDL environment variable controls for gamepad detection and mapping issues
+
+## Build & run from source
+
+- Clone the repo, then run `scripts/build-and-run.sh`. It builds `Whisky.app` via `xcodebuild` and immediately opens it so the installer can download `Libraries.tar.gz` (attached to the `v3.1.1` release) automatically into `~/Library/Application Support/com.jhmk.WhiskySour/Libraries/`.
+- The runtime download only runs the first time; future launches use the locally cached Wine/DXVK bundle. Re-running the script rebuilds the app if you change code.
 - **Stability Diagnostics** - One-click diagnostic reports for troubleshooting crashes and freezes
 - **Native SwiftUI** - Beautiful, familiar macOS interface
 
