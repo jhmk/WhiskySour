@@ -24,30 +24,36 @@ download_and_extract() {
     echo "Reusing cached $(basename "$url")"
   else
     echo "Downloading $url"
-    curl -L -f "$url" -o "$tmp"
+    if ! curl -L -f "$url" -o "$tmp"; then
+      echo "Failed to download $url"
+      return 1
+    fi
   fi
 
   case "$tmp" in
     *.tar.xz) tar -xJf "$tmp" -C "$LIBDIR" ;;
     *.tar.gz) tar -xzf "$tmp" -C "$LIBDIR" ;;
-    *) echo "Unknown archive format: $tmp"; exit 1 ;;
+    *) echo "Unknown archive format: $tmp"; return 1 ;;
   esac
 
-  rm -f "$tmp"
+  return 0
 }
 
 download_and_extract "$WINE_URL"
 download_and_extract "$DXVK_URL"
 CABEXTRACT_TARGET="$LIBDIR/cabextract"
 for url in "${CABEXTRACT_URLS[@]}"; do
-  download_and_extract "$url"
+  if download_and_extract "$url"; then
     CABEXTRACT_BIN=$(find "$LIBDIR" -name cabextract -type f -perm +111 -print -quit)
-  if [[ -n "$CABEXTRACT_BIN" ]]; then
-    cp "$CABEXTRACT_BIN" "$CABEXTRACT_TARGET"
-    chmod +x "$CABEXTRACT_TARGET"
-    break
+    if [[ -n "$CABEXTRACT_BIN" ]]; then
+      cp "$CABEXTRACT_BIN" "$CABEXTRACT_TARGET"
+      chmod +x "$CABEXTRACT_TARGET"
+      break
+    else
+      echo "cabextract binary not found in $url, trying next URL"
+    fi
   else
-    echo "cabextract binary not found in $url, trying next URL"
+    echo "Skipping $url due to download/extract failure"
   fi
 done
 
