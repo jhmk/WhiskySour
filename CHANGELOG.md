@@ -14,12 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `scripts/build-and-run.sh` builds `WhiskeySour.app` and immediately opens it so the first launch downloads the Wine/DXVK runtime automatically.
+ - The helper now copies the built `WhiskeySour.app` into the repo root so users can launch the bundle without digging through DerivedData.
 
 ## [3.1.3] - 2026-04-07
 
 ### Changed
 - Renamed the bundle and documentation from “Whisky” to “WhiskeySour” so the fork’s branding stays consistent across the app and docs.
 - Added `WhiskyWineVersion.plist` (version 3.1.3, DXVK 2.7.1) so the installer only checks this repo for updates.
+- Removed the automatic Wine runtime update check (`shouldUpdateWhiskyWine`) so the app relies solely on the published `WhiskyWineVersion.plist` from this repo.
 ## [3.1.1] - 2026-04-07
 
 ### Changed

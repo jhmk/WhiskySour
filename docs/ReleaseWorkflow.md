@@ -137,7 +137,7 @@ Replace the placeholder in `Whisky/Info.plist`:
 
 6. **Publish version metadata**
    - Copy `WhiskyWineVersion.plist` (this repo's root file) to the gh-pages site at `https://jhmk.github.io/WhiskySour/WhiskyWineVersion.plist`.
-   - Keep the plist content aligned with the runtime you publish (e.g., version `3.1.3`, `dxvkVersion = 2.7.1`) so `WhiskyWineInstaller.shouldUpdateWhiskyWine()` only checks this repo for updates.
+   - Keep the plist content aligned with the runtime you publish (e.g., version `3.1.3`, `dxvkVersion = 2.7.1`). The app now reads this plist directly so Sparkle/installer update checks only depend on this repo.
 
 7. **Smoke Test DXVK**
 

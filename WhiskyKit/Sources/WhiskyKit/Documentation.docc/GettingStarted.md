@@ -44,11 +44,6 @@ if !WhiskyWineInstaller.isWhiskyWineInstalled() {
     WhiskyWineInstaller.install(from: tarballURL)
 }
 
-// Check for updates
-let (shouldUpdate, newVersion) = await WhiskyWineInstaller.shouldUpdateWhiskyWine()
-if shouldUpdate {
-    print("Update available: \(newVersion)")
-}
 ```
 
 ## Creating a Bottle
