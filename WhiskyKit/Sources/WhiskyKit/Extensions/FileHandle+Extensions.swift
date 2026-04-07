@@ -237,6 +237,9 @@ extension FileHandle {
         if let version = WhiskyWineInstaller.whiskyWineVersion() {
             header += "WhiskyWine Version: \(version.major).\(version.minor).\(version.patch)\n"
         }
+        if let dxvkVersion = WhiskyWineInstaller.whiskyWineDXVKVersion() {
+            header += "DXVK Version: \(dxvkVersion)\n"
+        }
         header += "Windows Version: \(bottle.settings.windowsVersion)\n"
         header += "Enhanced Sync: \(bottle.settings.enhancedSync)\n\n"
 

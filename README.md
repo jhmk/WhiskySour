@@ -35,6 +35,7 @@ Whisky provides a clean and easy-to-use graphical wrapper for Wine built in nati
 ## Key Features
 
 - **Wine 11.0** - Latest stable Wine with improved compatibility and networking
+- **DXVK 2.7.1** - Direct3D-to-Vulkan translation layer for improved graphics performance
 - **Launcher Compatibility** - Built-in support for Steam, Epic, EA App, Rockstar, Battle.net, and more
 - **Experimental DXMT Backend** - Optional Metal-based Direct3D backend for Apple Silicon and Tahoe
 - **Controller Support** - SDL environment variable controls for gamepad detection and mapping issues

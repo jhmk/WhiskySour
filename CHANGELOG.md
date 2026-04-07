@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Upgraded DXVK from `1.10.3` to `2.7.1` for improved performance and compatibility
+- Kept Wine pinned to `11.0` stable line
+- Surfaced the bundled DXVK release in the installer logs and DXVK config UI
+
 ## [3.1.0] - 2026-04-07
 
 ### Added

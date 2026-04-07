@@ -17,6 +17,7 @@
 //
 
 @testable import WhiskyKit
+import SemanticVersion
 import XCTest
 
 final class WhiskyWineInstallerTests: XCTestCase {
@@ -67,5 +68,25 @@ final class WhiskyWineInstallerTests: XCTestCase {
         WhiskyWineInstaller.cleanupTarball(at: tarURL)
 
         XCTAssertTrue(FileManager.default.fileExists(atPath: tarURL.path))
+    }
+
+    func testWhiskyWineInfoDecodesDXVKVersion() throws {
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: tempDir) }
+
+        let versionPlist = tempDir.appendingPathComponent("WhiskyWineVersion").appendingPathExtension("plist")
+        let plist: [String: Any] = [
+            "version": ["major": 2, "minor": 5, "patch": 0],
+            "dxvkVersion": "2.7.1"
+        ]
+        let data = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
+        try data.write(to: versionPlist)
+
+        let info = WhiskyWineInstaller.whiskyWineInfo(at: versionPlist)
+
+        XCTAssertNotNil(info)
+        XCTAssertEqual(info?.version, SemanticVersion(2, 5, 0))
+        XCTAssertEqual(info?.dxvkVersion, "2.7.1")
     }
 }

@@ -61,7 +61,9 @@ private let logger = Logger(subsystem: Bundle.whiskyBundleIdentifier, category: 
 ///
 /// ### Installation Status
 /// - ``isWhiskyWineInstalled()``
+/// - ``whiskyWineInfo()``
 /// - ``whiskyWineVersion()``
+/// - ``whiskyWineDXVKVersion()``
 ///
 /// ### Installation Management
 /// - ``install(from:)``
@@ -215,18 +217,43 @@ public class WhiskyWineInstaller {
     ///   or `nil` if WhiskyWine is not installed or the version
     ///   file cannot be read.
     public static func whiskyWineVersion() -> SemanticVersion? {
-        do {
-            let versionPlist = libraryFolder
-                .appending(path: "WhiskyWineVersion")
-                .appendingPathExtension("plist")
+        whiskyWineInfo()?.version
+    }
 
+    /// Returns the full version record of the installed WhiskyWine runtime.
+    ///
+    /// - Returns: The decoded `WhiskyWineVersion` plist contents, or `nil` if the
+    ///   version file cannot be read.
+    public static func whiskyWineInfo() -> WhiskyWineVersion? {
+        let versionPlist = libraryFolder
+            .appending(path: "WhiskyWineVersion")
+            .appendingPathExtension("plist")
+        return whiskyWineInfo(at: versionPlist)
+    }
+
+    /// Returns the full version record from an arbitrary version plist.
+    ///
+    /// This is primarily used by tests and release tooling that need to inspect
+    /// the bundled DXVK version without depending on a fixed install location.
+    ///
+    /// - Parameter versionPlist: The plist file to decode.
+    /// - Returns: The decoded version record, or `nil` if decoding fails.
+    static func whiskyWineInfo(at versionPlist: URL) -> WhiskyWineVersion? {
+        do {
             let decoder = PropertyListDecoder()
             let data = try Data(contentsOf: versionPlist)
-            let info = try decoder.decode(WhiskyWineVersion.self, from: data)
-            return info.version
+            return try decoder.decode(WhiskyWineVersion.self, from: data)
         } catch {
             logger.debug("WhiskyWine version not found: \(error.localizedDescription)")
             return nil
         }
+    }
+
+    /// Returns the bundled DXVK release string from the installed WhiskyWine runtime.
+    ///
+    /// - Returns: The bundled DXVK version string, or `nil` if the runtime does
+    ///   not expose a DXVK version in its plist.
+    public static func whiskyWineDXVKVersion() -> String? {
+        whiskyWineInfo()?.dxvkVersion
     }
 }

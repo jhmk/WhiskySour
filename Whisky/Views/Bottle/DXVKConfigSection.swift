@@ -44,6 +44,12 @@ struct DXVKConfigSection: View {
                 .buttonStyle(.borderedProminent)
             }
 
+            if let dxvkVersion = WhiskyWineInstaller.whiskyWineDXVKVersion() {
+                Text("Bundled DXVK: \(dxvkVersion)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
             Toggle(isOn: $bottle.settings.dxvk) {
                 Text("config.dxvk")
             }
