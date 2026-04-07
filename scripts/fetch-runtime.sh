@@ -8,9 +8,6 @@ CACHE_DIR="$REPO/.cache/runtime"
 
 WINE_URL="https://github.com/Gcenx/macOS_Wine_builds/releases/download/11.0/wine-stable-11.0-osx64.tar.xz"
 DXVK_URL="https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz"
-CABEXTRACT_URLS=(
-  "https://www.cabextract.org.uk/cabextract-1.11.tar.gz"
-)
 NUM_CORES="$(sysctl -n hw.ncpu 2>/dev/null || echo 4)"
 
 mkdir -p "$LIBDIR"
@@ -45,55 +42,22 @@ download_and_extract() {
 
 download_and_extract "$WINE_URL"
 download_and_extract "$DXVK_URL"
-CABEXTRACT_TARGET="$LIBDIR/cabextract"
-for url in "${CABEXTRACT_URLS[@]}"; do
-  if download_and_extract "$url"; then
-    CABEXTRACT_BIN=$(find "$LIBDIR" -name cabextract -type f -perm +111 -print -quit)
-    if [[ -n "$CABEXTRACT_BIN" ]]; then
-      cp "$CABEXTRACT_BIN" "$CABEXTRACT_TARGET"
-      chmod +x "$CABEXTRACT_TARGET"
-      break
-    else
-  echo "cabextract binary not found in $url, trying next URL"
-    fi
-  else
-    echo "Skipping $url due to download/extract failure"
-  fi
-done
+CABEXTRACT_BIN="$(command -v cabextract 2>/dev/null || true)"
+if [[ -z "$CABEXTRACT_BIN" ]]; then
+  cat <<'EOF'
+cabextract is required to assemble Libraries.tar.gz.
+Install it via Homebrew before running this script:
 
-if [[ ! -f "$CABEXTRACT_TARGET" ]]; then
-  echo "Attempting to build cabextract from source"
-  for src_dir in "$LIBDIR"/cabextract*; do
-    if [[ -d "$src_dir/src" && -f "$src_dir/configure" ]]; then
-      pushd "$src_dir" > /dev/null
-      ./configure --prefix="$LIBDIR" && make -j"$NUM_CORES"
-      built_cabextract=""
-      if [[ -f cabextract ]]; then
-        built_cabextract="cabextract"
-      elif [[ -f src/cabextract ]]; then
-        built_cabextract="src/cabextract"
-      fi
-      if [[ -n "$built_cabextract" ]]; then
-        cp "$built_cabextract" "$CABEXTRACT_TARGET"
-        chmod +x "$CABEXTRACT_TARGET"
-        popd > /dev/null
-        break
-      fi
-      popd > /dev/null
-    fi
-  done
-fi
+  brew install cabextract
 
-if [[ ! -f "$CABEXTRACT_TARGET" && -x "$(command -v cabextract 2>/dev/null)" ]]; then
-  echo "Using system cabextract binary from $(command -v cabextract)"
-  cp "$(command -v cabextract)" "$CABEXTRACT_TARGET"
-  chmod +x "$CABEXTRACT_TARGET"
-fi
-
-if [[ ! -f "$CABEXTRACT_TARGET" ]]; then
-  echo "error: cabextract binary still missing after all downloads and builds"
+After installing cabextract rerun this script so the system binary is copied into Libraries/.
+EOF
   exit 1
 fi
+
+CABEXTRACT_TARGET="$LIBDIR/cabextract"
+cp "$CABEXTRACT_BIN" "$CABEXTRACT_TARGET"
+chmod +x "$CABEXTRACT_TARGET"
 
 if [[ -f "$TARBALL" ]]; then
   rm -f "$TARBALL"
