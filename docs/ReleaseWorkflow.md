@@ -135,6 +135,12 @@ Replace the placeholder in `Whisky/Info.plist`:
    
    Note: The version in the URL must match the GitHub Release tag exactly.
 
+6. **Publish version metadata**
+   - Copy `WhiskyWineVersion.plist` (this repo's root file) to the gh-pages site at `https://jhmk.github.io/WhiskySour/WhiskyWineVersion.plist`.
+   - Keep the plist content aligned with the runtime you publish (e.g., version `3.1.3`, `dxvkVersion = 2.7.1`) so `WhiskyWineInstaller.shouldUpdateWhiskyWine()` only checks this repo for updates.
+
+7. **Smoke Test DXVK**
+
 6. **Smoke Test DXVK**
    - Launch Steam and confirm the client renders normally.
    - Start one known DirectX 9 title.
