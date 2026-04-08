@@ -13,7 +13,22 @@ NUM_CORES="$(sysctl -n hw.ncpu 2>/dev/null || echo 4)"
 mkdir -p "$LIBDIR"
 mkdir -p "$CACHE_DIR"
 
-rm -rf "$LIBDIR"/*
+LIBRARIES_RECENT_THRESHOLD=$(date -v-3d +%s)
+SHOULD_CLEAR_LIBRARIES=1
+if [[ -d "$LIBDIR" && $(find "$LIBDIR" -mindepth 1 -print -quit) ]]; then
+  while IFS= read -r -d '' entry; do
+    entry_mtime=$(stat -f %m "$entry")
+    if (( entry_mtime >= LIBRARIES_RECENT_THRESHOLD )); then
+      echo "Libraries/ contains content newer than 3 days; skipping clean."
+      SHOULD_CLEAR_LIBRARIES=0
+      break
+    fi
+  done < <(find "$LIBDIR" -mindepth 1 -print0)
+fi
+
+if (( SHOULD_CLEAR_LIBRARIES == 1 )); then
+  rm -rf "$LIBDIR"/*
+fi
 
 download_and_extract() {
   local url="$1"
