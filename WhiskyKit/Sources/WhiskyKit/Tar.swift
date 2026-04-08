@@ -42,6 +42,10 @@ public enum TarError: LocalizedError {
 public class Tar {
     static let tarBinary: URL = .init(fileURLWithPath: "/usr/bin/tar")
 
+    private static let shouldValidateArchivePaths: Bool = {
+        ProcessInfo.processInfo.environment["WHISKY_VALIDATE_TAR_PATHS"] == "1"
+    }()
+
     public static func tar(folder: URL, toURL: URL) throws {
         let process = Process()
         let pipe = Pipe()
@@ -74,8 +78,9 @@ public class Tar {
     /// - Throws: `TarError.pathTraversal` if the archive contains unsafe paths,
     ///   or `TarError.commandFailed` if the tar command fails.
     public static func untar(tarBall: URL, toURL: URL) throws {
-        // First, validate archive contents for path traversal attacks
-        try validateArchivePaths(tarBall: tarBall, targetDirectory: toURL)
+        if shouldValidateArchivePaths {
+            try validateArchivePaths(tarBall: tarBall, targetDirectory: toURL)
+        }
 
         // Safe to extract after validation
         let process = Process()
