@@ -52,14 +52,13 @@ public class Tar {
         process.standardError = pipe
 
         try process.run()
-
-        if let output = try pipe.fileHandleForReading.readToEnd() {
-            let outputString = String(data: output, encoding: .utf8) ?? String()
-            process.waitUntilExit()
-            let status = process.terminationStatus
-            if status != 0 {
-                throw TarError.commandFailed(output: outputString)
-            }
+        let output = try pipe.fileHandleForReading.readToEnd()
+        pipe.fileHandleForReading.closeFile()
+        process.waitUntilExit()
+        let outputString = String(data: output, encoding: .utf8) ?? String()
+        let status = process.terminationStatus
+        if status != 0 {
+            throw TarError.commandFailed(output: outputString)
         }
     }
 
@@ -88,14 +87,13 @@ public class Tar {
         process.standardError = pipe
 
         try process.run()
-
-        if let output = try pipe.fileHandleForReading.readToEnd() {
-            let outputString = String(data: output, encoding: .utf8) ?? String()
-            process.waitUntilExit()
-            let status = process.terminationStatus
-            if status != 0 {
-                throw TarError.commandFailed(output: outputString)
-            }
+        let output = try pipe.fileHandleForReading.readToEnd()
+        pipe.fileHandleForReading.closeFile()
+        process.waitUntilExit()
+        let outputString = String(data: output, encoding: .utf8) ?? String()
+        let status = process.terminationStatus
+        if status != 0 {
+            throw TarError.commandFailed(output: outputString)
         }
     }
 
@@ -122,9 +120,9 @@ public class Tar {
         process.standardError = pipe
 
         try process.run()
+        let output = try pipe.fileHandleForReading.readToEnd()
+        pipe.fileHandleForReading.closeFile()
         process.waitUntilExit()
-
-        let output = try pipe.fileHandleForReading.readToEnd() ?? Data()
         let listing = String(data: output, encoding: .utf8) ?? ""
 
         // Ensure the tar listing command succeeded - if it fails, we cannot
