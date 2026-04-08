@@ -33,7 +33,7 @@ fi
 if [[ ! -f "$LIBRARIES_TARBALL" ]]; then
   if [[ -d "$LIBRARIES_DIR" && $(find "$LIBRARIES_DIR" -mindepth 1 -print -quit) ]]; then
     echo "Packaging Libraries/ into Libraries.tar.gz"
-    tar -czf "$LIBRARIES_TARBALL" -C "$LIBRARIES_DIR" .
+    tar -czf "$LIBRARIES_TARBALL" -C "$REPO_ROOT" Libraries
   else
     echo "Libraries/ is empty; please populate it before packaging."
   fi
