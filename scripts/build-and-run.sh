@@ -15,7 +15,7 @@ xcodebuild -project Whisky.xcodeproj \
   -scheme Whisky \
   -destination 'platform=macOS' \
   -derivedDataPath "$DERIVED_DATA" \
-  CLANG_MODULE_CACHE_PATH="${CLANG_MODULE_CACHE_PATH:-$TMPDIR/clang-cache}"
+  CLANG_MODULE_CACHE_PATH="$CLANG_MODULE_CACHE_PATH" \
   build
 
 APP_PATH="$(find "$DERIVED_DATA/Build/Products/Debug" -maxdepth 1 -name "*.app" -print -quit)"
