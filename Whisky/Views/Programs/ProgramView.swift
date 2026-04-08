@@ -25,7 +25,7 @@ struct ProgramView: View {
     @State private var programLoading: Bool = false
     @State private var cachedIconImage: Image?
     @State private var toast: ToastData?
-    @AppStorage("configSectionExapnded") private var configSectionExpanded: Bool = true
+    @AppStorage("configSectionExpanded") private var configSectionExpanded: Bool = true
     @AppStorage("envArgsSectionExpanded") private var envArgsSectionExpanded: Bool = true
 
     var body: some View {

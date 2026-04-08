@@ -187,16 +187,10 @@ enum LauncherDiagnostics {
 
         """
 
-        var env: [String: String] = [:]
-        for (key, value) in Wine.constructWineEnvironment(for: bottle, environment: [:]) {
-            env[key] = value
-        }
-
-        // Sort for readability
+        let env = Wine.constructWineEnvironment(for: bottle, environment: [:])
         let sortedEnv = env.sorted { $0.key < $1.key }
 
         for (key, value) in sortedEnv {
-            // Truncate very long values for readability
             let displayValue = value.count > 100 ? "\(value.prefix(97))..." : value
             snapshot += "\(key) = \(displayValue)\n"
         }

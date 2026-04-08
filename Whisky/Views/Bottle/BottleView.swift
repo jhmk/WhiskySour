@@ -162,9 +162,7 @@ struct BottleView: View {
             .sheet(isPresented: $showWinetricksSheet) {
                 WinetricksView(bottle: bottle)
             }
-            .onChange(of: bottle.settings) { oldValue, newValue in
-                guard oldValue != newValue else { return }
-                // Trigger a reload
+            .onChange(of: bottle.settings) { _, _ in
                 BottleVM.shared.bottles = BottleVM.shared.bottles
             }
             .navigationDestination(for: BottleStage.self) { stage in
@@ -193,8 +191,8 @@ struct BottleView: View {
             for program in bottle.programs where
                 // For some godforsaken reason "foo/bar" != "foo/Bar" so...
                 program.url.path().caseInsensitiveCompare(startMenuProgram.url.path()) == .orderedSame {
+                guard !bottle.settings.pins.contains(where: { $0.url == program.url }) else { continue }
                 program.pinned = true
-                guard !bottle.settings.pins.contains(where: { $0.url == program.url }) else { return }
                 bottle.settings.pins.append(PinnedProgram(
                     name: program.url.deletingPathExtension().lastPathComponent,
                     url: program.url

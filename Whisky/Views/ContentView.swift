@@ -192,12 +192,10 @@ struct ContentView: View {
 
     @ViewBuilder
     var detail: some View {
-        if let bottle = selected {
-            if let bottle = bottleVM.bottles.first(where: { $0.url == bottle }) {
-                BottleView(bottle: bottle)
-                    .disabled(bottle.inFlight)
-                    .id(bottle.url)
-            }
+        if let bottle = bottleVM.bottles.first(where: { $0.url == selected }) {
+            BottleView(bottle: bottle)
+                .disabled(bottle.inFlight)
+                .id(bottle.url)
         } else {
             if bottleVM.bottles.isEmpty || bottleVM.countActive() == 0, bottlesLoaded {
                 VStack {

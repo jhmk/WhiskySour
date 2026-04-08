@@ -90,12 +90,9 @@ struct ConfigView: View {
                 Button {
                     Task {
                         isRepairingPrefix = true
-                        defer {
-                            bottle.clearWineUsernameCache()
-                            isRepairingPrefix = false
-                        }
                         do {
                             try await Wine.repairPrefix(bottle: bottle)
+                            bottle.clearWineUsernameCache()
                             // Validate immediately after repair to confirm directories were created
                             let result = WinePrefixValidation.validatePrefix(for: bottle)
                             if result.isValid {
@@ -108,6 +105,7 @@ struct ConfigView: View {
                         } catch {
                             prefixRepairResult = .failure(error.localizedDescription)
                         }
+                        isRepairingPrefix = false
                     }
                 } label: {
                     HStack {
@@ -202,7 +200,6 @@ struct ConfigView: View {
                     do {
                         try await Wine.changeWinVersion(bottle: bottle, win: newValue)
                         winVersionLoadingState = .success
-                        bottle.settings.windowsVersion = newValue
                         loadBuildName()
                     } catch {
                         logger.error("Failed to change Windows version: \(error.localizedDescription)")

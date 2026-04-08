@@ -209,9 +209,9 @@ class Winetricks {
                 // Create a new category
                 // Capitalize the first letter of the category name
                 let categoryName = line.replacingOccurrences(of: "=====", with: "").trimmingCharacters(in: .whitespaces)
-                if let cateogry = WinetricksCategories(rawValue: categoryName) {
+                if let category = WinetricksCategories(rawValue: categoryName) {
                     currentCategory = WinetricksCategory(
-                        category: cateogry,
+                        category: category,
                         verbs: []
                     )
                 } else {
