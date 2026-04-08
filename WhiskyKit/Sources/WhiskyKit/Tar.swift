@@ -52,7 +52,7 @@ public class Tar {
         process.standardError = pipe
 
         try process.run()
-        let output = try pipe.fileHandleForReading.readToEnd()
+        let output = try pipe.fileHandleForReading.readToEnd() ?? Data()
         pipe.fileHandleForReading.closeFile()
         process.waitUntilExit()
         let outputString = String(data: output, encoding: .utf8) ?? String()
@@ -87,7 +87,7 @@ public class Tar {
         process.standardError = pipe
 
         try process.run()
-        let output = try pipe.fileHandleForReading.readToEnd()
+        let output = try pipe.fileHandleForReading.readToEnd() ?? Data()
         pipe.fileHandleForReading.closeFile()
         process.waitUntilExit()
         let outputString = String(data: output, encoding: .utf8) ?? String()
@@ -120,7 +120,7 @@ public class Tar {
         process.standardError = pipe
 
         try process.run()
-        let output = try pipe.fileHandleForReading.readToEnd()
+        let output = try pipe.fileHandleForReading.readToEnd() ?? Data()
         pipe.fileHandleForReading.closeFile()
         process.waitUntilExit()
         let listing = String(data: output, encoding: .utf8) ?? ""
@@ -132,10 +132,10 @@ public class Tar {
         }
 
         let targetPath = targetDirectory.standardizedFileURL.path
-        let lines = listing.components(separatedBy: .newlines).filter { !$0.isEmpty }
+        let lines = listing.components(separatedBy: CharacterSet.newlines).filter { !$0.isEmpty }
 
         for line in lines {
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            let trimmed = line.trimmingCharacters(in: CharacterSet.whitespaces)
 
             // Parse the archive entry - extract file path and check for symlinks
             let (archivePath, symlinkTarget) = parseVerboseTarLine(trimmed)
