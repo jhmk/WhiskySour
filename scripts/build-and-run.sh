@@ -5,6 +5,9 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DERIVED_DATA="$REPO_ROOT/DerivedData"
 LIBRARIES_DIR="$REPO_ROOT/Libraries"
 LIBRARIES_TARBALL="$REPO_ROOT/Libraries.tar.gz"
+MODULE_CACHE_PATH="${CLANG_MODULE_CACHE_PATH:-/tmp/clang-cache}"
+mkdir -p "$MODULE_CACHE_PATH"
+export CLANG_MODULE_CACHE_PATH="$MODULE_CACHE_PATH"
 
 cd "$REPO_ROOT"
 
@@ -12,6 +15,7 @@ xcodebuild -project Whisky.xcodeproj \
   -scheme Whisky \
   -destination 'platform=macOS' \
   -derivedDataPath "$DERIVED_DATA" \
+  CLANG_MODULE_CACHE_PATH="${CLANG_MODULE_CACHE_PATH:-$TMPDIR/clang-cache}"
   build
 
 APP_PATH="$(find "$DERIVED_DATA/Build/Products/Debug" -maxdepth 1 -name "*.app" -print -quit)"
